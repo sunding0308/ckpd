@@ -1,0 +1,512 @@
+[ 2019-12-17T10:38:25+08:00 ] 192.168.3.91 /
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000008s ]
+INFO: [ app_init ] --END-- [ RunTime:0.003251s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.003806s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.003829s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000027s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000050s ]
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.022026s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.022049s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.002857s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.002873s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.004135s ]
+INFO: [ app_end ] --END-- [ RunTime:0.004154s ]
+
+[ 2019-12-17T14:02:46+08:00 ] ::1 /
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000007s ]
+INFO: [ app_init ] --END-- [ RunTime:0.003751s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.005110s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.005139s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000026s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000053s ]
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.029814s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.029848s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.003440s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.003466s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.004944s ]
+INFO: [ app_end ] --END-- [ RunTime:0.004974s ]
+
+[ 2019-12-17T14:02:47+08:00 ] ::1 /Home/Index/GetArticlesList
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000007s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000675s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000802s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000825s ]
+SQL: SHOW COLUMNS FROM `articles` [ RunTime:0.0046s ]
+SQL: SELECT * FROM `articles` ORDER BY created_at desc  [ RunTime:0.0048s ]
+
+[ 2019-12-17T14:02:53+08:00 ] ::1 /Home/Index/detail?id=30
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000026s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001513s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000728s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000750s ]
+SQL: SHOW COLUMNS FROM `articles` [ RunTime:0.0014s ]
+SQL: SELECT * FROM `articles` WHERE `id` = 30 LIMIT 1   [ RunTime:0.0004s ]
+SQL: UPDATE `articles` SET `origin_url`='https://js.aizhan.com/develop/java/10700.html',`title`='浅谈spring的功能分类',`text`='<div class=\"container\">
+							
+<p>我们作为开发人员，专注于构建好的软件来解决业务问题，其实数据只是我们需要处理的原材料，下面信息管理部技术频道小编就来浅谈<span style=\"color:#002FD9\">spring</span>.xmp\" target=\"_blank\"><span style=\"color:#002FD9\">spring</span>的功能分类吧！</p>
+
+<p><strong>1 、将普通类加入容器形成Bean的注解</strong></p>
+
+<p>日常开发中主要使用到的定义Bean的注解包括(XML方式配置bean暂不讨论)：</p>
+
+<p>@Component、@Repository、@Service、@Controller、@Bean</p>
+
+<p>其中@Component、@Repository、@Service、@Controller实质上属于同一类注解，用法相同，功能相同，区别在于标识组件的类型。当一个组件代表数据访问层(Dao)时，你可以给它加上@Repository注解，如下例：</p>
+
+<div class=\"aizhancode\">
+<div class=\"codebody\"><pre class=\"brush:java;\">
+@Repository
+public class BiliAPIDaoImpl implements BiliAPIDao {
+private final static Logger LOGGER = LoggerFactory.getLogger(BiliAPIDaoImpl.class);
+ 
+private BiliAPIHttpClient asoAPIHttpClient;
+public void execute(){
+  //some logic business
+ }
+}</pre></div>
+</div>
+
+<p>当组件用于业务层时，使用@Service注解，如下例：</p>
+
+<div class=\"aizhancode\">
+<div class=\"codebody\"><pre class=\"brush:java;\">
+@Service(value=\"SecUserService\")
+public class SecUsersServiceImpl implements SecUsersService {
+ @Autowired
+ private SecUsersDao secUsersDao;
+ @Autowired
+ private SecRoleUserService secRoleUserService;
+ public void doBusiness(){
+  //do some business
+ }
+ }</pre></div>
+</div>
+
+<p>注意，在此处的@Service注解中额外添加了value=”SecUserService”的属性，为何对此一举呢？value属性可以指定生成后Bean的名称，这个名称便成为容器中bean 的唯一标识符。同样的，在@Component、@Repository、@Controller也均可以指定其value值，当然，是如有必要时加</p>
+
+<p>当组件属于控制层时，则使用@Controller注解；当组件不能进行很好地归类时，那我们可以使用@Component注解。因使用方式均相同，故此处不再继续贴代码</p>
+
+<p>在这几个注解中，额外需要留意的是@Bean注解。不妨看代码：</p>
+
+<div class=\"aizhancode\">
+<div class=\"codebody\"><pre class=\"brush:java;\">
+@Component
+public class FactoryMethodComponent {
+ 
+ private static int i;
+ 
+ @Bean @Qualifier(\"public\")
+ public TestBean publicInstance() {
+  return new TestBean(\"publicInstance\");
+ }
+ 
+ // use of a custom qualifier and autowiring of method parameters
+ 
+ @Bean
+ protected TestBean protectedInstance(@Qualifier(\"public\") TestBean spouse,
+          @Value(\"#{privateInstance.age}\") String country) {
+  TestBean tb = new TestBean(\"protectedInstance\", 1);
+  tb.setSpouse(tb);
+  tb.setCountry(country);
+  return tb;
+ }
+ 
+ @Bean @Scope(BeanDefinition.SCOPE_SINGLETON)
+ private TestBean privateInstance() {
+  return new TestBean(\"privateInstance\", i++);
+ }
+ 
+ @Bean @Scope(value = WebApplicationContext.SCOPE_SESSION,
+    proxyMode = ScopedProxyMode.TARGET_CLASS)
+ public TestBean requestScopedInstance() {
+  return new TestBean(\"requestScopedInstance\", 3);
+ }
+}</pre></div>
+</div>
+
+<p>Bean注解主要用于方法上，有点类似于工厂方法，当使用了@Bean注解，我们可以连续使用多种定义bean时用到的注解，譬如用@Qualifier注解定义工厂方法的名称，用@Scope注解定义该bean的作用域范围，譬如是singleton还是prototype等。</p>
+
+<p>此处还得另外提一个注解: @Configuration.实际上，上面谈到的@Bean注解更多时候是与@Configuration注解在一起使用的。如果将一个类标注为@Configuration注解，那么也就意味着这个class将会作为创建各种bean的工厂（类似于一个新的容器）。最简单的配合使用示例如下：</p>
+
+<div class=\"aizhancode\">
+<div class=\"codebody\"><pre class=\"brush:java;\">
+@Configuration
+public class AppConfig {
+ @Bean
+ public MyService myService() {
+  return new MyServiceImpl();
+ }
+}</pre></div>
+</div>
+
+<p>以上的代码实际上等价于Xml中的配置：</p>
+
+<div class=\"aizhancode\">
+<div class=\"codebody\"><pre class=\"brush:xml;\">
+<beans>
+ <bean class=\"com.acme.services.MyServiceImpl\" id=\"myService\">
+</bean></beans></pre></div>
+</div>
+
+<p>我们还需要注意的一点，在Spring的@Component注解中使用@Bean与在Spring中的@Configuration使用是一定的差别的。在使用@Component的类中不会强制使用CGLIB代理拦截方法和属性。而在@Configuration类中，则会使用CGLIB代理去调用@Bean标注的方法并返回对象的引用。在@Configuration注解中使用@Bean也可以防止同一个@Bean方法被意外调用多次时而产生细微的难以排查的错误</p>
+
+<p><strong>2、从容器中取Bean（装配bean）时常用的注解</strong></p>
+
+<p>开发中最常用到的用于装配的注解是：@Autowired和@Resource</p>
+
+<p>@Autowired注解：</p>
+
+<div class=\"aizhancode\">
+<div class=\"codebody\"><pre class=\"brush:java;\">
+public class MovieRecommender {
+ 
+ @Autowired
+ private MovieCatalog movieCatalog;
+ 
+ private CustomerPreferenceDao customerPreferenceDao;
+ 
+ @Autowired
+ public MovieRecommender(CustomerPreferenceDao customerPreferenceDao) {
+  this.customerPreferenceDao = customerPreferenceDao;
+ }
+ 
+ // ...
+}</pre></div>
+</div>
+
+<p>@Autowired注解可用于为类的属性、构造器、方法进行注值。默认情况下，其依赖的对象必须存在（bean可用），如果需要改变这种默认方式，可以设置其required属性为false。另外一个比较重要的点就是，@Autowired注解默认按照类型装配，如果容器中包含多个同一类型的Bean，那么启动容器时会报找不到指定类型bean的异常，解决办法是结合@Qualified注解进行限定，指定注入的bean名称</p>
+
+<p>@Resource注解<br>
+对于@Resource注解，它并不属于spring的注解，而是来自于JSR-250。其默认情况下按照bean的名称进行注入，当找不到匹配项时会按照类型装配。当按照名称进行装配时，可以指定其name属性，倘若没有指定，注解标注在哪个字段上，其默认名称就是那个字段的名称。当然，@Resource注解也支持按指定类型进行装配，给它的type属性赋特定类型的值即可（注意，当指定了name属性后，只能按照名称装配）</p>
+
+<div class=\"aizhancode\">
+<div class=\"codebody\"><pre class=\"brush:java;\">
+public class SpringAnotationDemo {
+ 
+ @Bean
+ @Qualifier(\"httpApiClient\")
+ public HttpApiClient createHttpClient() {
+  return new HttpApiClient();
+ }
+ 
+ @Resource(name = \"httpApiClient\")
+ private HttpApiClient httpApiClient;
+ @Resource(type = XQSmsHttpClient.class)
+ private SmsHttpClient smsHttpClient;
+}</pre></div>
+</div>
+
+<p>依我个人理解，其实@Resource要比@Autowired好用得多，@Resource注解的使用性更为灵活，可指定名称，也可以指定类型 ，而用@Autowired注解进行装配容易抛出异常，特别是装配的bean类型有多个的时候，而解决的办法是需要在增加@Qualitied进行限定</p>
+
+<p>vc模块注解\">3、spring MVC模块注解<br>
+web模块常用到的注解包括：</p>
+
+<p>@Controller、@RequestMapping、@RequestParam、@PathVariable</p>
+
+<p>@Controller<br>
+将一个类加上@Controller注解后，表明该类会作为与前端作交互的控制层组件</p>
+
+<div class=\"aizhancode\">
+<div class=\"codebody\"><pre class=\"brush:java;\">
+@Controller
+public class CompanyController {
+/**this class will be the controller component of container**/
+...
+}</pre></div>
+</div>
+
+<p>@RequestMapping<br>
+这个注解用于将url映射到整个处理类或者特定的处理请求的方法</p>
+
+<div class=\"aizhancode\">
+<div class=\"codebody\"><pre class=\"brush:java;\">
+@Controller
+@RequestMapping(\"/company\")
+public class CompanyController {
+ 
+ @Autowired
+ private CompanyService companyService;
+...
+}</pre></div>
+</div>
+
+<p>如上例，当标注在class上时，表明此类会接收url为”/company”请求</p>
+
+<p>@RequestParam<br>
+用于绑定request请求参数到指定的方法</p>
+
+<div class=\"aizhancode\">
+<div class=\"codebody\"><pre class=\"brush:java;\">
+@Controller
+@RequestMapping(\"/company\")
+public class CompanyController {
+ 
+ @Autowired
+ private CompanyService companyService;
+ 
+ @RequestMapping(\"/companyList\")
+ public String listCompanies(Map<string, object=\"\"> map, 
+    @RequestParam(value = \"data\", required = false) String data,
+    @RequestParam(value = \"phone_num\", required = true) String phoneNum) {
+ map.put(\"data\", data);
+ map.put(\"phoneNum\", phoneNum);
+ return \"companyList\";
+ }
+...
+}</pre></div>
+</div>
+
+<p>譬如上例中，@RequestParam请求参数指定了传入参数的具体字段名（value指定的），以及是否必须传的字段（默认情况下，required=true）。data,phoneNum为形参，即请求参数的使用名，可以更改</p>
+
+<p>@PathVariable<br>
+该注解用于方法修饰方法参数，会将修饰的方法参数变为可供使用的uri变量（可用于动态绑定），请看如下栗子：</p>
+
+<div class=\"aizhancode\">
+<div class=\"codebody\"><pre class=\"brush:java;\">
+@Controller
+@RequestMapping(\"/company\")
+public class CompanyController {
+ 
+ @Autowired
+ private CompanyService companyService;
+ 
+ @RequestMapping(\"{companyName}\")
+ public String getCompany(Map<string, object=\"\"> map, 
+   @PathVariable String companyName) {
+ Company company = companyService.findByName(companyName);
+ map.put(\"company\", company);
+ return \"company\";
+ }
+...
+}</pre></div>
+</div>
+
+<p>当我们请求 “/compony/account”时，componyName会动态地绑定为”account”</p>
+
+<p><strong>4、事务模块注解@Transactional</strong></p>
+
+<p>在处理dao层或service层的事务操作时，譬如删除失败时的回滚操作，可用到@Transactional注解，如下例：</p>
+
+<div class=\"aizhancode\">
+<div class=\"codebody\"><pre class=\"brush:java;\">
+@Service
+public class CompanyServiceImpl implements CompanyService {
+ @Autowired
+ private CompanyDAO companyDAO;
+ 
+ @Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = Exception.class)
+ public int deleteByName(String name) {
+ 
+ int result = companyDAO.deleteByName(name);
+ return company;
+ }
+ ...
+}</pre></div>
+</div>
+
+<p>上例表明，执行deleteByName方法时，启用了事务处理，事务的各属性含义如下：</p>
+
+<p>propagation<br>
+事务的传播行为，spring在TransactionDefinition接口中规定了7种类型的事务传播行为，它们规定了事务方法和事务方法发生嵌套调用时如何进行传播：</p>
+
+<p> </p>
+
+<table>
+<thead><tr>
+<th>事务传播行为类型</th>
+			<th>描述</th>
+		</tr></thead>
+<tbody>
+<tr>
+<td>PROPAGATION_REQUIRED</td>
+			<td>如果当前没有事务，就新建一个事务，如果已经存在一个事务中，加入到这个事务中。这是最常见的选择。</td>
+		</tr>
+<tr>
+<td>PROPAGATION_SUPPORTS</td>
+			<td>支持当前事务，如果当前没有事务，就以非事务方式执行。</td>
+		</tr>
+<tr>
+<td>PROPAGATION_MANDATORY</td>
+			<td>使用当前的事务，如果当前没有事务，就抛出异常。</td>
+		</tr>
+<tr>
+<td>PROPAGATION_REQUIRES_NEW</td>
+			<td>新建事务，如果当前存在事务，把当前事务挂起。</td>
+		</tr>
+<tr>
+<td>PROPAGATION_NOT_SUPPORTED</td>
+			<td>以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。</td>
+		</tr>
+<tr>
+<td>PROPAGATION_NEVER</td>
+			<td>以非事务方式执行，如果当前存在事务，则抛出异常</td>
+		</tr>
+<tr>
+<td>PROPAGATION_NESTED</td>
+			<td>如果当前存在事务，则在嵌套事务内执行。如果当前没有事务，则执行与PROPAGATION_REQUIRED类 似的操作</td>
+		</tr>
+</tbody>
+</table>
+<p>注：第一种是最常用的，默认的</p>
+
+<p>readOnly<br>
+事务的读写属性，取true或者false，true为只读、默认为false rollbackFor<br>
+回滚策略，当遇到指定异常时回滚。譬如上例遇到异常就回滚 timeout （补充的）<br>
+设置超时时间，单位为秒 isolation<br>
+设置事务隔离级别，枚举类型，一共五种</p>
+
+<p> </p>
+
+<table>
+<thead><tr>
+<th>类型</th>
+			<th>描述</th>
+		</tr></thead>
+<tbody>
+<tr>
+<td>DEFAULT</td>
+			<td>采用数据库默认隔离级别</td>
+		</tr>
+<tr>
+<td>READ_UNCOMMITTED</td>
+			<td>读未提交的数据（会出现脏读取）</td>
+		</tr>
+<tr>
+<td>READ_COMMITTED</td>
+			<td>读已提交的数据（会出现幻读，即前后两次读的不一样）</td>
+		</tr>
+<tr>
+<td>REPEATABLE_READ</td>
+			<td>可重复读，会出现幻读</td>
+		</tr>
+<tr>
+<td>SERIALIZABLE</td>
+			<td>串行化（对资源消耗较大，一般不使用）</td>
+		</tr>
+</tbody>
+</table>
+<p>5、 Spring AOP模块注解<br>
+spring aop模块的注解主要有@Aspect、@Pointcut、@Before、@Around、@After、<br>
+@AfterReturning、@AfterThrowing</p>
+
+<p>@Aspect<br>
+标明该类为切面类，并启用AspectJ注解，注：在使用时要同@Component一起使用，否则不会被扫描到加入容器</p>
+
+<p>@Pointcut<br>
+定义切入点，关于切入点表达式书写方式，请移步官方文档：spring AOP文档</p>
+
+<p>@Around<br>
+定义环绕通知，在目标方法执行前后嵌入相关业务逻辑</p>
+
+<p>@Before<br>
+定义前置通知，在目标方法执行前执行</p>
+
+<p>@After<br>
+定义后置通知，在目标方法执行后执行，不论是目标方法执行正常后退出，还是抛出异常后退出，均会被执行</p>
+
+<p>@AfterReturning<br>
+目标方法执行正常退出后执行 @AfterThrowing<br>
+目标方法执行抛出异常后执行</p>
+
+<p>通过信息管理部技术频道小编介绍的浅谈spring的功能分类，大家都了解了多少呢？随着现在互联网的持续发展，编程还是很有发展的。</p>
+						</div>
+					',`creator`='信息管理部',`created_at`='2019-12-17 10:29:29',`updated_at`='2019-12-17 10:29:29',`click`='1',`type`='1' WHERE `id` = 30 [ RunTime:0.0008s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000022s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000040s ]
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.011608s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.011628s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.000479s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000494s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000655s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000671s ]
+
+[ 2019-12-17T14:02:53+08:00 ] ::1 /Home/Index/ShowDetail?id=30
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000008s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000716s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000752s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000772s ]
+SQL: SHOW COLUMNS FROM `articles` [ RunTime:0.0015s ]
+SQL: SELECT * FROM `articles` WHERE `id` = 30 LIMIT 1   [ RunTime:0.0005s ]
+
+[ 2019-12-17T14:07:43+08:00 ] ::1 /
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000006s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000669s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000847s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000867s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000022s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000045s ]
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.012056s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.012084s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.000696s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000712s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000881s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000897s ]
+
+[ 2019-12-17T14:07:43+08:00 ] ::1 /Home/Index/GetArticlesList
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000011s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000920s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001285s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001306s ]
+SQL: SHOW COLUMNS FROM `articles` [ RunTime:0.0016s ]
+SQL: SELECT * FROM `articles` ORDER BY created_at desc  [ RunTime:0.0031s ]
+
+[ 2019-12-17T14:21:04+08:00 ] ::1 /
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000014s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001152s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001225s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001263s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000030s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000061s ]
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.015339s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.015382s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001193s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001233s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001446s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001477s ]
+
+[ 2019-12-17T14:21:05+08:00 ] ::1 /Home/Index/GetArticlesList
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000010s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000988s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001200s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001237s ]
+SQL: SHOW COLUMNS FROM `articles` [ RunTime:0.0015s ]
+SQL: SELECT * FROM `articles` ORDER BY created_at desc  [ RunTime:0.0061s ]
+
