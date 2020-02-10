@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>仓库车辆排队系统</title>
+    <title><?php echo ($cks[$ck]); ?>-仓库车辆排队系统</title>
 </head>
 <body>
-    <h1 class="title">仓库车辆排队系统</h1>
+    <h1 class="title"><?php echo ($cks[$ck]); ?>-仓库车辆排队系统</h1>
+    <input type="hidden" id="ck" value="<?php echo ($ck); ?>">
     <div class="header">
         <div class="search">
             <input type="text" placeholder="请输入车牌号..." name="carNo" value=""/>
@@ -16,8 +17,8 @@
         <div class="droplist">
             <select name="states" id="selectStates">
                 <option style="display: none;" disable>状态筛选</option>
-                <option value="/Home/Queue/list/p/1.html?states=01">装车中/排队中</option>
-                <option value="/Home/Queue/list/p/1.html?states=2">已发货</option>
+                <option value="/Home/Queue/list/p/1.html?states=01&ck=<?php echo ($ck); ?>">装车中/排队中</option>
+                <option value="/Home/Queue/list/p/1.html?states=2&ck=<?php echo ($ck); ?>">已发货</option>
             </select>
         </div>
     </div>
@@ -229,14 +230,15 @@
 
     function doSearch(){
         var car_no = $('input[name="carNo"]').val()
+        var ck = $('#ck').val();
         if (car_no){
             url = window.location.href
             if(url.indexOf("?") != -1){
                 url = url.split("?")[0];
             }
-            self.location.href=url+'?car_no='+car_no
+            self.location.href=url+'?car_no='+car_no+'&ck='+ck;
         } else {
-            self.location.href='/home/queue/list';
+            self.location.href='/home/queue/list?ck='+ck;
         }
     }
 </script>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>仓库车辆排队系统</title>
+    <title>仓库车辆排队系统-{$cks[$ck]}</title>
 </head>
 <body>
     <div class="logo">
@@ -12,7 +12,7 @@
     </div>
     <hr>
     <div class="form">
-        <h4 class="title">仓库车辆排队系统</h4>
+        <h4 class="title">仓库车辆排队系统-{$cks[$ck]}</h4>
         <div class="info">
             <span id="successInfo"></span>
             <span id="errorInfo"></span>
@@ -37,6 +37,10 @@
                         <option value="铜管">铜管</option>
                         <option value="铜带">铜带</option>
                         <option value="铜板">铜板</option>
+                        <option value="铜棒">铜棒</option>
+                        <option value="电材">电材</option>
+                        <option value="棒线">棒线</option>
+                        <option value="铜排">铜排</option>
                     </select>
                 </div>
                 <div class="field">
@@ -46,6 +50,7 @@
                         <option value="重车">重车</option>
                     </select>
                 </div>
+                <input type="hidden" name="ck" value="{$ck}">
             </form>
         </div>
         <button type="button" onclick="submitForm()">提交</button>
@@ -126,11 +131,12 @@
         var clientName = $("input[name='clientName']").val()
         var goodsType = $("select[name='goodsType']").val()
         var carStates = $("select[name='carStates']").val()
+        var ck = $("input[name='ck']").val()
         if (!carNo || carNo.length != 5) {
             alert("请输入正确的车牌号")
             return
         }
-        if (!phoneNo || isNaN(phoneNo) || phoneNo.length != 11) {
+        if (!phoneNo || isNaN(phoneNo) || (phoneNo.length != 6 && phoneNo.length != 11)) {
             alert("请输入正确的手机号")
             return
         }
@@ -156,7 +162,8 @@
                             phoneNo: phoneNo,
                             clientName: clientName,
                             goodsType: goodsType,
-                            carStates: carStates
+                            carStates: carStates,
+                            ck: ck
                             },
                         dataType: "json",
                         success: function (data) {
