@@ -29,12 +29,26 @@ class SqlsrvService {
             echo "连接地磅系统失败！";
             exit;
         }else {
-            $sql = "select 车号,一次过磅时间,二次过磅时间 from dbo.称重信息 where 车号 = '".$carNo."' and 更新时间 > convert(varchar(10),getdate(),120)";
-            $result = $re->conn->query($sql);
-            if ($result->fetch()) {
-                return true;
+            $sql = "select top 1 净重,皮重 from dbo.称重信息 where 车号 = '".$carNo."' and 更新时间 > convert(varchar(10),getdate(),120) order by 一次过磅时间 desc";
+            $result = $re->conn->query($sql)->fetch();
+            //未过磅不能排队
+            if ($result) {
+                //皮重和净重都有值，不能排队
+                if ($result['皮重'] != '.000' && $result['净重'] != '.000') {
+                    return [
+                        'status' => false,
+                        'msg' => '车辆已过磅无法排队!'
+                    ];
+                } else {
+                    return [
+                        'status' => true
+                    ];
+                }
             } else {
-                return false;
+                return [
+                    'status' => false,
+                    'msg' => '车辆未过磅无法排队!'
+                ];
             }
         }
     }

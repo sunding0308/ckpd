@@ -9,24 +9,25 @@
     <h1 class="title">仓库车辆排队系统</h1>
 
     <div class="navigation">
-        <span>前台页面>></span>
-        <span><a href="/home/queue?ck=01" target="_blank">【铜管|铜带|铜板】</a></span>
-        <span><a href="/home/queue?ck=02" target="_blank">【铜棒】</a></span>
-        <span><a href="/home/queue?ck=03" target="_blank">【电材】</a></span>
-        <span><a href="/home/queue?ck=04" target="_blank">【棒线】</a></span>
-        <span><a href="/home/queue?ck=05" target="_blank">【铜排】</a></span>
+        <span>前台入口>></span>
+        <span><a href="/home/queue?ck=01" target="_blank">「铜管|铜带|铜板」</a></span>
+        <span><a href="/home/queue?ck=02" target="_blank">「铜棒」</a></span>
+        <span><a href="/home/queue?ck=03" target="_blank">「电材」</a></span>
+        <span><a href="/home/queue?ck=04" target="_blank">「棒线」</a></span>
+        <span><a href="/home/queue?ck=05" target="_blank">「铜排」</a></span>
         <hr>
-        <span>后台页面>></span>
-        <span><a href="/home/queue/list?ck=01" target="_blank">【铜管|铜带|铜板】</a></span>
-        <span><a href="/home/queue/list?ck=02" target="_blank">【铜棒】</a></span>
-        <span><a href="/home/queue/list?ck=03" target="_blank">【电材】</a></span>
-        <span><a href="/home/queue/list?ck=04" target="_blank">【棒线】</a></span>
-        <span><a href="/home/queue/list?ck=05" target="_blank">【铜排】</a></span>
+        <span>后台入口>></span>
+        <span><a href="/home/queue/list?ck=01" target="_blank">「铜管|铜带|铜板」</a></span>
+        <span><a href="/home/queue/list?ck=02" target="_blank">「铜棒」</a></span>
+        <span><a href="/home/queue/list?ck=03" target="_blank">「电材」</a></span>
+        <span><a href="/home/queue/list?ck=04" target="_blank">「棒线」</a></span>
+        <span><a href="/home/queue/list?ck=05" target="_blank">「铜排」</a></span>
     </div>
 </body>
 </html>
 
 <style>
+    a {text-decoration:none;}
     .title {
         text-align: center;
         color: rgb(10, 170, 170);

@@ -25,7 +25,9 @@ class QueueController extends Controller {
         $this->ajaxReturn([
             'Result' => "1",
             'Data' => [
-                'queues' => $queues
+                'queues' => $queues,
+                'todayTotal' => $todayTotal,
+                'finished' => $finished,
             ],
         ]);
     }
@@ -84,9 +86,12 @@ class QueueController extends Controller {
         $carNo = strtoupper(I('carNo'));
         $phoneNo = I('phoneNo');
         $clientName = I('clientName');
-        $goodsType = I('goodsType');
+        $type = I('type');
         $carStates = I('carStates');
         $ck = I('ck');
+        $carNo = str_replace('O', '0', $carNo);
+        $carNo = str_replace('L', '1', $carNo);
+        $goodsType = implode(',', $type);
         $queue = M("Queue");
         $data = $queue->where('car_no='."'$carNo'".' AND states <> 2')->find();
         
@@ -162,9 +167,11 @@ class QueueController extends Controller {
     }
 
     public function checkCar(){
-        $carNo = I('carNo');
+        $carNo = strtoupper(I('carNo'));
+        $carNo = str_replace('O', '0', $carNo);
+        $carNo = str_replace('L', '1', $carNo);
         $re = SqlsrvService::checkCarNo($carNo);
-        if ($re) {
+        if ($re['status']) {
             $this->ajaxReturn([
                 'Result' => "1"
             ]);
@@ -172,7 +179,7 @@ class QueueController extends Controller {
             $this->ajaxReturn([
                 'Result' => "0",
                 'Data' => [
-                    'Message' => '车辆未过磅无法排队!'
+                    'Message' => $re['msg']
                 ],
             ]);
         }

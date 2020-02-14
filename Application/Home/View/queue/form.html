@@ -32,24 +32,22 @@
                     <input type="text" name="clientName">
                 </div>
                 <div class="field">
-                    <label>货物类型: </label>
-                    <select name="goodsType">
-                        <option value="铜管">铜管</option>
-                        <option value="铜带">铜带</option>
-                        <option value="铜板">铜板</option>
-                        <option value="铜棒">铜棒</option>
-                        <option value="电材">电材</option>
-                        <option value="棒线">棒线</option>
-                        <option value="铜排">铜排</option>
-                    </select>
-                </div>
-                <div class="field">
                     <label>车辆状态: </label>
                     <select name="carStates">
                         <option value="空车">空车</option>
                         <option value="重车">重车</option>
                     </select>
                 </div>
+                <if condition="$ck == 01">
+                    <div class="field">
+                        <label>货物类型: </label>
+                        <label><input name="goodsTypes" type="checkbox" value="铜管" />铜管 </label>
+                        <label><input name="goodsTypes" type="checkbox" value="铜带" />铜带 </label>
+                        <label><input name="goodsTypes" type="checkbox" value="铜板" />铜板 </label>
+                    </div>
+                <else/>
+                    <input type="hidden" name="goodsType" value="{$cks[$ck]}">
+                </if>
                 <input type="hidden" name="ck" value="{$ck}">
             </form>
         </div>
@@ -129,9 +127,9 @@
         var carNo = $("input[name='carNo']").val()
         var phoneNo = $("input[name='phoneNo']").val()
         var clientName = $("input[name='clientName']").val()
-        var goodsType = $("select[name='goodsType']").val()
         var carStates = $("select[name='carStates']").val()
         var ck = $("input[name='ck']").val()
+        var goodsType = $('input[name="goodsType"]').val()
         if (!carNo || carNo.length != 5) {
             alert("请输入正确的车牌号")
             return
@@ -143,6 +141,24 @@
         if (!clientName) {
             alert("请输入客户名称")
             return
+        }
+        //铜管、铜带、铜板选择货物类型，其他默认选择
+        if (goodsType == undefined) {
+            var obj = $('input[name="goodsTypes"]')
+            check_val = [];
+            for(k in obj){
+                if(obj[k].checked && obj[k].value != "0")
+                    check_val.push(obj[k].value);
+            }
+            if (check_val.length == 0) {
+                alert("请选择货物类型")
+                return
+            } else {
+                type = check_val;
+            }
+        } else {
+            type = [];
+            type.push(goodsType);
         }
         $.ajax({
             url: "/Home/queue/checkCar",
@@ -161,7 +177,7 @@
                             carNo: carNo,
                             phoneNo: phoneNo,
                             clientName: clientName,
-                            goodsType: goodsType,
+                            type: type,
                             carStates: carStates,
                             ck: ck
                             },
