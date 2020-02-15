@@ -21,6 +21,8 @@
                 <img src="/home/queue/qrcode?ck={$ck}" width="300" height="300"/>
             </div>
             <div class="description"><span>扫描二维码，进入排队系统</span></div>
+            <hr>
+            <div>今日排队总车辆：<span id="todayTotal"></span><br>已完成：<span id="finished"></span> 排队中: <span id="queuing"></span></div>
         </div>
     </div>
 </body>
@@ -40,6 +42,12 @@
     }
     .description {
         text-align: center;
+    }
+    #finished {
+        color: seagreen;
+    }
+    #queuing {
+        color: tomato;
     }
 </style>
 
@@ -82,6 +90,9 @@
                                 + '</span>'
                                 + '</li>';
                     }
+                    $("#todayTotal").text(info.todayTotal);
+                    $("#finished").text(info.finished);
+                    $("#queuing").text(info.todayTotal - info.finished);
                     $("#car_list").html(html);
                 }
             }

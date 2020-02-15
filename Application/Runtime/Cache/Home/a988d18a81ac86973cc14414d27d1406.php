@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title><?php echo ($cks[$ck]); ?>-仓库车辆排队系统</title>
+    <title>仓库车辆排队系统-<?php echo ($cks[$ck]); ?></title>
 </head>
 <body>
-    <h1 class="title"><?php echo ($cks[$ck]); ?>-仓库车辆排队系统</h1>
+    <h1 class="title">仓库车辆排队系统-<?php echo ($cks[$ck]); ?></h1>
     <input type="hidden" id="ck" value="<?php echo ($ck); ?>">
     <div class="header">
         <div class="search">
