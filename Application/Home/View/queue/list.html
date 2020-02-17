@@ -53,6 +53,7 @@
                             <if condition="$queue.priority eq 0">
                                 <input type="button" id="{$queue.id}" class="button button-priority" onclick="priority_confirm(this)" value="加急">
                             </if>
+                            <input type="button" id="{$queue.id}" class="button button-delete" onclick="delete_confirm(this)" value="删除">
                         </td>
                         <elseif condition="$queue.states eq 1" /> 
                         <td style="color: blue;">装车中</td>
@@ -148,6 +149,9 @@
     .button-transmit {
         background-color:rgb(8, 114, 13);
     }
+    .button-delete {
+        background-color:black;
+    }
     table,table tr th, table tr td { border:1px solid #0094ff; }
     table { width: 100%; min-height: 25px; line-height: 25px; text-align: center; border-collapse: collapse;} 
     .pages{float: right}
@@ -215,6 +219,27 @@
             $.ajax({
                 url: "/Home/Queue/priority",
                 type: "Post",
+                data: {
+                    id: element.id,
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data.Result == "1") {
+                        window.location.reload();
+                    } else {
+                        console.log("操作失败")
+                    }
+                }
+            });
+        }
+    }
+
+    function delete_confirm(element){
+        var r=confirm("你确定"+element.value+"吗?")
+        if (r==true){
+            $.ajax({
+                url: "/Home/Queue/delete",
+                type: "post",
                 data: {
                     id: element.id,
                 },

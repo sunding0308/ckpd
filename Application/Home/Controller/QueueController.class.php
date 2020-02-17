@@ -163,7 +163,22 @@ class QueueController extends Controller {
                 'Result' => "0"
             ]);
         }
+    }
 
+    public function delete(){
+        $id = I('id');
+        $queue = M("Queue");
+        $data = $queue->delete($id);
+        // var_dump($id);exit;
+        if ($data) {
+            $this->ajaxReturn([
+                'Result' => "1"
+            ]);
+        } else {
+            $this->ajaxReturn([
+                'Result' => "0"
+            ]);
+        }
     }
 
     public function checkCar(){
