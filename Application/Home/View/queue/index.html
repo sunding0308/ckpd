@@ -72,21 +72,21 @@
                         html += "<hr>";
                         var nowHtml = info.queues[i];
                         html +='<li>'
-                                    + '<span style="float: left; margin-left:5%; width:10%">' + nowHtml.car_no + '</span>'
-                                    + '<span style="float: left; margin-left:5%; width:10%">' + nowHtml.goods_type + '</span>';
+                                    + '<span style="float: left; margin-left:5%; width:10%; font-size:140%">' + nowHtml.car_no + '</span>'
+                                    + '<span style="float: left; margin-left:5%; width:10%; font-size:140%">' + nowHtml.goods_type + '</span>';
                         if (nowHtml.states == 0) {
                             var States = '排队中';
                             var color = 'tomato';
-                            html += '<span style="float: left; margin-left:10%;">已等待<B style="color:rgb(187, 16, 178)">' + WaitTime(nowHtml.queued_at) + '</B>分钟</span>';
+                            html += '<span style="float: left; margin-left:10%; font-size:140%">已等待<B style="color:rgb(187, 16, 178)">' + WaitTime(nowHtml.queued_at) + '</B>分钟</span>';
                             if (nowHtml.priority == 1) {
-                                html += '<span style="float: left;color:red;">(加急)</span>';
+                                html += '<span style="float: left;color:red; font-size:140%">(加急)</span>';
                             }
                         } else {
                             var States = '装车中';
                             var color = 'blue';
                         }
                         html += '<span style="float: right; margin-right: 40px">'
-                                + '<span style="color: ' + color + ';">' + States + '</span>'
+                                + '<span style="color: ' + color + '; font-size:140%">' + States + '</span>'
                                 + '</span>'
                                 + '</li>';
                     }

@@ -15,8 +15,8 @@ class QueueController extends Controller {
     public function GetQueueList(){
         $queue = M("Queue");
         $ck = I('ck');
-        $queues = $queue->where('states <> 2 and ck = '.$ck)->order('states desc, priority desc, expedited_at asc, queued_at asc')->select();
         $today = date("Y-m-d 00:00:00");
+        $queues = $queue->where('states <> 2 and ck = '.$ck.' and queued_at >= "'.$today.'"')->order('states desc, priority desc, expedited_at asc, queued_at asc')->select();
         $map['queued_at'] = ['egt', $today];
         $map['ck'] = $ck;
         $todayTotal = $queue->where($map)->count();
@@ -169,7 +169,6 @@ class QueueController extends Controller {
         $id = I('id');
         $queue = M("Queue");
         $data = $queue->delete($id);
-        // var_dump($id);exit;
         if ($data) {
             $this->ajaxReturn([
                 'Result' => "1"
