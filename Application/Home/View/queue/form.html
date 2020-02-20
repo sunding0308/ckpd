@@ -32,6 +32,10 @@
                     <input type="text" name="clientName">
                 </div>
                 <div class="field">
+                    <label>货物重量: </label>
+                    <input id="goods_weight" type="number" name="goodsWeight">吨
+                </div>
+                <div class="field">
                     <label>车辆状态: </label>
                     <select name="carStates">
                         <option value="空车">空车</option>
@@ -82,6 +86,9 @@
         height: 5%;
         margin: 20px 0px 20px 0px;
     }
+    #goods_weight {
+        width: 125px;
+    }
     input {
         margin-left: 10px;
         text-align:center;
@@ -127,6 +134,7 @@
         var carNo = $("input[name='carNo']").val()
         var phoneNo = $("input[name='phoneNo']").val()
         var clientName = $("input[name='clientName']").val()
+        var goodsWeight = $("input[name='goodsWeight']").val()
         var carStates = $("select[name='carStates']").val()
         var ck = $("input[name='ck']").val()
         var goodsType = $('input[name="goodsType"]').val()
@@ -140,6 +148,10 @@
         }
         if (!clientName) {
             alert("请输入客户名称")
+            return
+        }
+        if (!goodsWeight) {
+            alert("请输入货物重量")
             return
         }
         //铜管、铜带、铜板选择货物类型，其他默认选择
@@ -177,6 +189,7 @@
                             carNo: carNo,
                             phoneNo: phoneNo,
                             clientName: clientName,
+                            goodsWeight: goodsWeight,
                             type: type,
                             carStates: carStates,
                             ck: ck
@@ -186,6 +199,7 @@
                             $("input[name='carNo']").val('');
                             $("input[name='phoneNo']").val('');
                             $("input[name='clientName']").val('');
+                            $("input[name='goodsWeight']").val('');
                             var info = data.Data;
                             if (data.Result == "1") {
                                 $("#errorInfo").html('');

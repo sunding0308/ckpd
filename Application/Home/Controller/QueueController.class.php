@@ -86,6 +86,7 @@ class QueueController extends Controller {
         $carNo = strtoupper(I('carNo'));
         $phoneNo = I('phoneNo');
         $clientName = I('clientName');
+        $goodsWeight = I('goodsWeight');
         $type = I('type');
         $carStates = I('carStates');
         $ck = I('ck');
@@ -106,6 +107,7 @@ class QueueController extends Controller {
             $queue->car_no = $carNo;
             $queue->phone_no = $phoneNo;
             $queue->client_name = $clientName;
+            $queue->goods_weight = $goodsWeight;
             $queue->goods_type = $goodsType;
             $queue->car_states = $carStates;
             $queue->ck = $ck;

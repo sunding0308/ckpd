@@ -25,22 +25,24 @@
     <div class="table-list">
         <table>
             <tr>
-                <th style="width: 10%;">车牌号</th>
+                <th style="width: 5%;">车牌号</th>
                 <th style="width: 10%;">手机号</th>
                 <th style="width: 10%;">客户名称</th>
+                <th style="width: 5%;">货物重量(吨)</th>
                 <th style="width: 10%;">货物类型</th>
-                <th style="width: 10%;">车辆状态</th>
+                <th style="width: 5%;">车辆状态</th>
                 <th style="width: 10%;">排队时间</th>
                 <th style="width: 10%;">装车时间</th>
                 <th style="width: 10%;">发货时间</th>
                 <th style="width: 10%;">排队状态</th>
-                <th style="width: 10%;">操作</th>
+                <th style="width: 15%;">操作</th>
             </tr>
             <foreach name="queues" item="queue">
                 <tr>
                     <td>{$queue.car_no}</td>
                     <td>{$queue.phone_no}</td>
                     <td>{$queue.client_name}</td>
+                    <td>{$queue.goods_weight}</td>
                     <td>{$queue.goods_type}</td>
                     <td>{$queue.car_states}</td>
                     <td>{$queue.queued_at}</td>
