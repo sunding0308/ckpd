@@ -37,7 +37,7 @@ class SqlsrvService {
                 if ($result['皮重'] != '.000' && $result['净重'] != '.000') {
                     return [
                         'status' => false,
-                        'msg' => '车辆已过磅无法排队!'
+                        'msg' => '车辆已二次过磅无法排队!'
                     ];
                 } else {
                     return [

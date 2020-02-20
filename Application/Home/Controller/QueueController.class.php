@@ -91,7 +91,7 @@ class QueueController extends Controller {
         $carStates = I('carStates');
         $ck = I('ck');
         $carNo = str_replace('O', '0', $carNo);
-        $carNo = str_replace('L', '1', $carNo);
+        $carNo = str_replace('I', '1', $carNo);
         $goodsType = implode(',', $type);
         $queue = M("Queue");
         $data = $queue->where('car_no='."'$carNo'".' AND states <> 2')->find();
@@ -185,7 +185,7 @@ class QueueController extends Controller {
     public function checkCar(){
         $carNo = strtoupper(I('carNo'));
         $carNo = str_replace('O', '0', $carNo);
-        $carNo = str_replace('L', '1', $carNo);
+        $carNo = str_replace('I', '1', $carNo);
         $re = SqlsrvService::checkCarNo($carNo);
         if ($re['status']) {
             $this->ajaxReturn([
