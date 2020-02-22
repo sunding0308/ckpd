@@ -53,6 +53,7 @@
                     <input type="hidden" name="goodsType" value="{$cks[$ck]}">
                 </if>
                 <input type="hidden" name="ck" value="{$ck}">
+                <input type="hidden" name="zt" value="{$zt}">
             </form>
         </div>
         <button type="button" onclick="submitForm()">提交</button>
@@ -137,6 +138,7 @@
         var goodsWeight = $("input[name='goodsWeight']").val()
         var carStates = $("select[name='carStates']").val()
         var ck = $("input[name='ck']").val()
+        var zt = $("input[name='zt']").val()
         var goodsType = $('input[name="goodsType"]').val()
         if (!carNo || carNo.length != 5) {
             alert("请输入正确的车牌号")
@@ -172,44 +174,54 @@
             type = [];
             type.push(goodsType);
         }
+        var obj = {
+            carNo: carNo,
+            phoneNo: phoneNo,
+            clientName: clientName,
+            goodsWeight: goodsWeight,
+            type: type,
+            carStates: carStates,
+            ck: ck,
+            zt: zt
+        }
+        if (zt == 'true') {
+            doSubmit(obj);
+        } else {
+            $.ajax({
+                url: "/Home/queue/checkCar",
+                type: "POST",
+                data: {
+                    carNo: carNo,
+                    },
+                dataType: "json",
+                success: function (data) {
+                    var info = data.Data;
+                    if (data.Result == "1") {
+                        doSubmit(obj);
+                    } else {
+                        $("#successInfo").html('');
+                        $("#errorInfo").html(info.Message);
+                    }
+                }
+            });
+        }
+    }
+
+    function doSubmit(obj) { 
         $.ajax({
-            url: "/Home/queue/checkCar",
+            url: "/Home/queue/submit",
             type: "POST",
-            data: {
-                carNo: carNo,
-                },
+            data: obj,
             dataType: "json",
             success: function (data) {
+                $("input[name='carNo']").val('');
+                $("input[name='phoneNo']").val('');
+                $("input[name='clientName']").val('');
+                $("input[name='goodsWeight']").val('');
                 var info = data.Data;
                 if (data.Result == "1") {
-                    $.ajax({
-                        url: "/Home/queue/submit",
-                        type: "POST",
-                        data: {
-                            carNo: carNo,
-                            phoneNo: phoneNo,
-                            clientName: clientName,
-                            goodsWeight: goodsWeight,
-                            type: type,
-                            carStates: carStates,
-                            ck: ck
-                            },
-                        dataType: "json",
-                        success: function (data) {
-                            $("input[name='carNo']").val('');
-                            $("input[name='phoneNo']").val('');
-                            $("input[name='clientName']").val('');
-                            $("input[name='goodsWeight']").val('');
-                            var info = data.Data;
-                            if (data.Result == "1") {
-                                $("#errorInfo").html('');
-                                $("#successInfo").html(info.Message);
-                            } else {
-                                $("#successInfo").html('');
-                                $("#errorInfo").html(info.Message);
-                            }
-                        }
-                    });
+                    $("#errorInfo").html('');
+                    $("#successInfo").html(info.Message);
                 } else {
                     $("#successInfo").html('');
                     $("#errorInfo").html(info.Message);

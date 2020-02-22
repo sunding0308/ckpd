@@ -68,6 +68,7 @@ class QueueController extends Controller {
     public function form(){
         $timestamp = I('timestamp');
         $ck = I('ck');
+        $zt = I('zt');
         $cks = C('cks');
         
         $timediff = time()-$timestamp;   //时间差的秒数
@@ -78,6 +79,7 @@ class QueueController extends Controller {
             return;
         }
         $this->assign('ck',$ck);
+        $this->assign('zt',$zt);
         $this->assign('cks',$cks);
         $this->display('form');
     }
@@ -90,6 +92,7 @@ class QueueController extends Controller {
         $type = I('type');
         $carStates = I('carStates');
         $ck = I('ck');
+        $zt = I('zt') == 'true' ? 1 : 0;
         $carNo = str_replace('O', '0', $carNo);
         $carNo = str_replace('I', '1', $carNo);
         $goodsType = implode(',', $type);
@@ -111,6 +114,7 @@ class QueueController extends Controller {
             $queue->goods_type = $goodsType;
             $queue->car_states = $carStates;
             $queue->ck = $ck;
+            $queue->zt = $zt;
             $queue->queued_at = date("Y-m-d H:i:s");
             $queue->states = 0;
             $queue->add();
@@ -206,7 +210,7 @@ class QueueController extends Controller {
         $ck = I('ck');
         //生成二维码图片
         $object = new \QRcode();
-        $url=C('domain').'/home/queue/form?timestamp='.time().'&ck='.$ck;//网址或者是文本内容
+        $url=C('domain').'/home/queue/form?timestamp='.time().'&ck='.$ck.'&zt=false';//网址或者是文本内容
         $level=3;
         $size=8;
         $errorCorrectionLevel =intval($level) ;//容错级别
