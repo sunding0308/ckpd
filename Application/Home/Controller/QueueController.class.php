@@ -103,7 +103,7 @@ class QueueController extends Controller {
             $this->ajaxReturn([
                 'Result' => "0",
                 'Data' => [
-                    'Message' => $data['car_no'].' 已在排队中！'
+                    'Message' => $data['car_no'].' 已在'.C('cks')[$data['ck']].'仓库排队中！'
                 ],
             ]);
         } else {
