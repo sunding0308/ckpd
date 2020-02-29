@@ -2,6 +2,8 @@
 namespace Home\Controller;
 use Think\Controller;
 use Home\Service\SqlsrvService;
+// use Home\Service\SmsService;
+
 class QueueController extends Controller {
 
     public function Index(){
@@ -63,6 +65,39 @@ class QueueController extends Controller {
         $show       = $Page->show();// 分页显示输出
         $this->assign('page',$show);// 赋值分页输出
         $this->display(); // 输出模板
+    }
+
+    public function allList(){
+        $queue = M('Queue');
+        $states = I('states');
+        $carNo = I('car_no');
+        $p = $_GET['p'] == NULL ? 1:$_GET['p'];
+        $today = date("Y-m-d 00:00:00");
+        if ($states == 2) {
+            $sql = 'states = 2 and queued_at >= "'.$today.'"';
+            if ($carNo) {
+                $sql = 'car_no = "'.$carNo.'"';
+            }
+        } elseif($states == 01) {
+            $sql = 'states <> 2 and queued_at >= "'.$today.'"';
+            if ($carNo) {
+                $sql = 'car_no = "'.$carNo.'"';
+            }
+        } else {
+            $sql = 'queued_at >= "'.$today.'"';
+            if ($carNo) {
+                $sql = 'car_no = "'.$carNo.'"';
+            }
+        }
+        $queues = $queue->where($sql)->order('states asc')->page($p.',10')->select();
+        $todayTotal = $queue->where('queued_at >= "'.$today.'"')->count();
+        $this->assign('queues', $queues);
+        $count      = $queue->where($sql)->count();// 查询满足要求的总记录数
+        $Page       = new \Think\Page($count,10);// 实例化分页类 传入总记录数和每页显示的记录数
+        $show       = $Page->show();// 分页显示输出
+        $this->assign('page',$show);// 赋值分页输出
+        $this->assign('todayTotal',$todayTotal);
+        $this->display();
     }
 
     public function form(){
@@ -137,6 +172,8 @@ class QueueController extends Controller {
             $queue->states = $states;
             if ($states == 1) {
                 $queue->loaded_at = date("Y-m-d H:i:s");
+                //点击装车发送短信给司机
+                // SmsService::sendYzxSms($data['phone_no'],$data['car_no'],C('cks')[$data['ck']]);
             } else {
                 $queue->transmited_at = date("Y-m-d H:i:s");
             }
