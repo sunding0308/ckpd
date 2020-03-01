@@ -1,0 +1,240 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>仓库车辆排队状态概览</title>
+    <link rel="stylesheet" href="/Public/css/icon/iconfont.css">
+</head>
+<body>
+    <h1 class="title">仓库车辆排队状态概览</h1>
+
+    <div id="datetime">
+        <script>
+            setInterval("document.getElementById('datetime').innerHTML=new Date().toLocaleString();", 1000);
+        </script>
+    </div>
+
+    <div class="overview">
+        <div>
+            <div class="warehouse">
+                <div class="warehouse-title">
+                    <h3>铜管|铜带|铜板仓库</h3>
+                    <span class="ck1-total"></span>
+                </div>
+                <div class="status ck1-queue-status">
+                </div>
+                <div class="status ck1-load-status">
+                </div>
+            </div>
+            <div class="warehouse">
+                <div class="warehouse-title">
+                    <h3>铜棒仓库</h3>
+                    <span class="ck2-total"></span>
+                </div>
+                <div class="status ck2-queue-status">
+                </div>
+                <div class="status ck2-load-status">
+                </div>
+            </div>
+            <div class="warehouse">
+                <div class="warehouse-title">
+                    <h3>电材仓库</h3>
+                    <span class="ck3-total"></span>
+                </div>
+                <div class="status ck3-queue-status">
+                </div>
+                <div class="status ck3-load-status">
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="warehouse">
+                <div class="warehouse-title">
+                    <h3>棒线仓库</h3>
+                    <span class="ck4-total"></span>
+                </div>
+                <div class="status ck4-queue-status">
+                </div>
+                <div class="status ck4-load-status">
+                </div>
+            </div>
+            <div class="warehouse">
+                <div class="warehouse-title">
+                    <h3>铜排仓库</h3>
+                    <span class="ck5-total"></span>
+                </div>
+                <div class="status ck5-queue-status">
+                </div>
+                <div class="status ck5-load-status">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<style>
+    .title {
+        text-align: center;
+        color: rgb(10, 170, 170);
+        font-size:20px;
+        font-size: xx-large;
+    }
+    #datetime {
+        text-align: center;
+    }
+    .warehouse {
+        width: 33%;
+        height: 40%;
+        float: left;
+        margin: 1px;
+        border:1px solid #000
+    }
+    .warehouse-title {
+        text-align: center;
+    }
+    .status {
+        margin-top: 5%;
+        margin-left: 10%;
+    }
+    .icon {
+       width: 2em; height: 2em;
+       vertical-align: -0.15em;
+       fill: currentColor;
+       overflow: hidden;
+    }
+</style>
+
+<script src="//at.alicdn.com/t/font_1664687_stpw8nt7gl.js"></script>
+<script src="/Public/js/jquery-1.10.2.min.js"></script>
+<script>
+    $(function () {
+        LoadInfo();
+    })
+
+    function LoadInfo() {
+        $.ajax({
+            url: "/Home/Queue/getQueueStatus",
+            type: "Get",
+            dataType: "json",
+            success: function (data) {
+                if (data.Result == "1") {
+                    var info = data.Data;
+                    //铜管|铜带|铜板仓库
+                    let html_ck1_total ='';
+                    let html_ck1_queue = '<span>排队中</span>';
+                    let html_ck1_load = '<span>装车中</span>';
+                    let ck1_total = parseInt(info.ck1Queue) + parseInt(info.ck1Load);
+                    if(ck1_total>10){
+                        ck1_total = '<span style="color:red">'+ck1_total+'</span>';
+                    }
+                    html_ck1_total += "仓库车辆共计"+ck1_total+"辆";
+                    $(".ck1-total").html(html_ck1_total);
+                    for (var i = 0; i < info.ck1Queue; i++) {
+                        html_ck1_queue += '<svg class="icon" aria-hidden="true">';
+                        html_ck1_queue += '<use xlink:href="#icon-yuandianzhong-green"></use>';
+                        html_ck1_queue += '</svg>';
+                    }
+                    $(".ck1-queue-status").html(html_ck1_queue);
+                    for (var i = 0; i < info.ck1Load; i++) {
+                        html_ck1_load += '<svg class="icon" aria-hidden="true">';
+                        html_ck1_load += '<use xlink:href="#icon-yuandianzhong-yellow"></use>';
+                        html_ck1_load += '</svg>';
+                    }
+                    $(".ck1-load-status").html(html_ck1_load);
+                    //铜棒仓库
+                    let html_ck2_total ='';
+                    let html_ck2_queue = '<span>排队中</span>';
+                    let html_ck2_load = '<span>装车中</span>';
+                    let ck2_total = parseInt(info.ck2Queue) + parseInt(info.ck2Load);
+                    if(ck2_total>10){
+                        ck2_total = '<span style="color:red">'+ck2_total+'</span>';
+                    }
+                    html_ck2_total += "仓库车辆共计"+ck2_total+"辆";
+                    $(".ck2-total").html(html_ck2_total);
+                    for (var i = 0; i < info.ck2Queue; i++) {
+                        html_ck2_queue += '<svg class="icon" aria-hidden="true">';
+                        html_ck2_queue += '<use xlink:href="#icon-yuandianzhong-green"></use>';
+                        html_ck2_queue += '</svg>';
+                    }
+                    $(".ck2-queue-status").html(html_ck2_queue);
+                    for (var i = 0; i < info.ck2Load; i++) {
+                        html_ck2_load += '<svg class="icon" aria-hidden="true">';
+                        html_ck2_load += '<use xlink:href="#icon-yuandianzhong-yellow"></use>';
+                        html_ck2_load += '</svg>';
+                    }
+                    $(".ck2-load-status").html(html_ck2_load);
+                    //电材仓库
+                    let html_ck3_total ='';
+                    let html_ck3_queue = '<span>排队中</span>';
+                    let html_ck3_load = '<span>装车中</span>';
+                    let ck3_total = parseInt(info.ck3Queue) + parseInt(info.ck3Load);
+                    if(ck3_total>10){
+                        ck3_total = '<span style="color:red">'+ck3_total+'</span>';
+                    }
+                    html_ck3_total += "仓库车辆共计"+ck3_total+"辆";
+                    $(".ck3-total").html(html_ck3_total);
+                    for (var i = 0; i < info.ck3Queue; i++) {
+                        html_ck3_queue += '<svg class="icon" aria-hidden="true">';
+                        html_ck3_queue += '<use xlink:href="#icon-yuandianzhong-green"></use>';
+                        html_ck3_queue += '</svg>';
+                    }
+                    $(".ck3-queue-status").html(html_ck3_queue);
+                    for (var i = 0; i < info.ck3Load; i++) {
+                        html_ck3_load += '<svg class="icon" aria-hidden="true">';
+                        html_ck3_load += '<use xlink:href="#icon-yuandianzhong-yellow"></use>';
+                        html_ck3_load += '</svg>';
+                    }
+                    $(".ck3-load-status").html(html_ck3_load);
+                    //棒线仓库
+                    let html_ck4_total ='';
+                    let html_ck4_queue = '<span>排队中</span>';
+                    let html_ck4_load = '<span>装车中</span>';
+                    let ck4_total = parseInt(info.ck4Queue) + parseInt(info.ck4Load);
+                    if(ck4_total>10){
+                        ck4_total = '<span style="color:red">'+ck4_total+'</span>';
+                    }
+                    html_ck4_total += "仓库车辆共计"+ck4_total+"辆";
+                    $(".ck4-total").html(html_ck4_total);
+                    for (var i = 0; i < info.ck4Queue; i++) {
+                        html_ck4_queue += '<svg class="icon" aria-hidden="true">';
+                        html_ck4_queue += '<use xlink:href="#icon-yuandianzhong-green"></use>';
+                        html_ck4_queue += '</svg>';
+                    }
+                    $(".ck4-queue-status").html(html_ck4_queue);
+                    for (var i = 0; i < info.ck4Load; i++) {
+                        html_ck4_load += '<svg class="icon" aria-hidden="true">';
+                        html_ck4_load += '<use xlink:href="#icon-yuandianzhong-yellow"></use>';
+                        html_ck4_load += '</svg>';
+                    }
+                    $(".ck4-load-status").html(html_ck4_load);
+                    //铜排仓库
+                    let html_ck5_total ='';
+                    let html_ck5_queue = '<span>排队中</span>';
+                    let html_ck5_load = '<span>装车中</span>';
+                    let ck5_total = parseInt(info.ck5Queue) + parseInt(info.ck5Load);
+                    if(ck5_total>10){
+                        ck5_total = '<span style="color:red">'+ck5_total+'</span>';
+                    }
+                    html_ck5_total += "仓库车辆共计"+ck5_total+"辆";
+                    $(".ck5-total").html(html_ck5_total);
+                    for (var i = 0; i < info.ck5Queue; i++) {
+                        html_ck5_queue += '<svg class="icon" aria-hidden="true">';
+                        html_ck5_queue += '<use xlink:href="#icon-yuandianzhong-green"></use>';
+                        html_ck5_queue += '</svg>';
+                    }
+                    $(".ck5-queue-status").html(html_ck5_queue);
+                    for (var i = 0; i < info.ck5Load; i++) {
+                        html_ck5_load += '<svg class="icon" aria-hidden="true">';
+                        html_ck5_load += '<use xlink:href="#icon-yuandianzhong-yellow"></use>';
+                        html_ck5_load += '</svg>';
+                    }
+                    $(".ck5-load-status").html(html_ck5_load);
+                }
+            }
+        });
+    }
+
+    setInterval(LoadInfo,30000);
+</script>

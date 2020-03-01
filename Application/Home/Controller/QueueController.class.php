@@ -254,4 +254,34 @@ class QueueController extends Controller {
         $matrixPointSize = intval($size);//生成图片大小
         $object->png($url, false, $errorCorrectionLevel, $matrixPointSize, 2);
     }
+
+    public function getQueueStatus(){
+        $queue = M('Queue');
+        $ck1Queue = $queue->where('ck = "01" and states = 0')->count();
+        $ck1Load = $queue->where('ck = "01" and states = 1')->count();
+        $ck2Queue = $queue->where('ck = "02" and states = 0')->count();
+        $ck2Load = $queue->where('ck = "02" and states = 1')->count();
+        $ck3Queue = $queue->where('ck = "03" and states = 0')->count();
+        $ck3Load = $queue->where('ck = "03" and states = 1')->count();
+        $ck4Queue = $queue->where('ck = "04" and states = 0')->count();
+        $ck4Load = $queue->where('ck = "04" and states = 1')->count();
+        $ck5Queue = $queue->where('ck = "05" and states = 0')->count();
+        $ck5Load = $queue->where('ck = "05" and states = 1')->count();
+
+        $this->ajaxReturn([
+            'Result' => "1",
+            'Data' => [
+                'ck1Queue' => $ck1Queue,
+                'ck1Load' => $ck1Load,
+                'ck2Queue' => $ck2Queue,
+                'ck2Load' => $ck2Load,
+                'ck3Queue' => $ck3Queue,
+                'ck3Load' => $ck3Load,
+                'ck4Queue' => $ck4Queue,
+                'ck4Load' => $ck4Load,
+                'ck5Queue' => $ck5Queue,
+                'ck5Load' => $ck5Load
+            ],
+        ]);
+    }
 }

@@ -1,0 +1,30 @@
+{
+  "id": "1664687",
+  "name": "ckpd",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "13226052",
+      "name": "圆点中",
+      "font_class": "yuandianzhong-green",
+      "unicode": "e759",
+      "unicode_decimal": 59225
+    },
+    {
+      "icon_id": "13226054",
+      "name": "圆点中",
+      "font_class": "yuandianzhong-yellow",
+      "unicode": "e75a",
+      "unicode_decimal": 59226
+    },
+    {
+      "icon_id": "681206",
+      "name": "圆点中",
+      "font_class": "yuandianzhong",
+      "unicode": "e758",
+      "unicode_decimal": 59224
+    }
+  ]
+}
