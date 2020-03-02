@@ -122,6 +122,7 @@ class QueueController extends Controller {
     public function submit(){
         $carNo = strtoupper(I('carNo'));
         $phoneNo = I('phoneNo');
+        $transportCompany = I('transportCompany');
         $clientName = I('clientName');
         $goodsWeight = I('goodsWeight');
         $type = I('type');
@@ -144,6 +145,7 @@ class QueueController extends Controller {
         } else {
             $queue->car_no = $carNo;
             $queue->phone_no = $phoneNo;
+            $queue->transport_company = $transportCompany;
             $queue->client_name = $clientName;
             $queue->goods_weight = $goodsWeight;
             $queue->goods_type = $goodsType;

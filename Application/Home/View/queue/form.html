@@ -28,6 +28,10 @@
                     <input type="text" name="phoneNo" maxlength="11" onkeyup="this.value=this.value.replace(/\D/g,'')">
                 </div>
                 <div class="field">
+                    <label>物流公司: </label>
+                    <input type="text" name="transportCompany">
+                </div>
+                <div class="field">
                     <label>客户名称: </label>
                     <input type="text" name="clientName">
                 </div>
@@ -134,6 +138,7 @@
     function submitForm() {
         var carNo = $("input[name='carNo']").val()
         var phoneNo = $("input[name='phoneNo']").val()
+        var transportCompany = $("input[name='transportCompany']").val()
         var clientName = $("input[name='clientName']").val()
         var goodsWeight = $("input[name='goodsWeight']").val()
         var carStates = $("select[name='carStates']").val()
@@ -146,6 +151,10 @@
         }
         if (!phoneNo || isNaN(phoneNo) || (phoneNo.length != 6 && phoneNo.length != 11)) {
             alert("请输入正确的手机号")
+            return
+        }
+        if (!transportCompany) {
+            alert("请输入物流公司名称")
             return
         }
         if (!clientName) {
@@ -177,6 +186,7 @@
         var obj = {
             carNo: carNo,
             phoneNo: phoneNo,
+            transportCompany: transportCompany,
             clientName: clientName,
             goodsWeight: goodsWeight,
             type: type,
@@ -216,6 +226,7 @@
             success: function (data) {
                 $("input[name='carNo']").val('');
                 $("input[name='phoneNo']").val('');
+                $("input[name='transportCompany']").val('');
                 $("input[name='clientName']").val('');
                 $("input[name='goodsWeight']").val('');
                 var info = data.Data;
