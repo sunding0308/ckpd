@@ -145,7 +145,7 @@
         var ck = $("input[name='ck']").val()
         var zt = $("input[name='zt']").val()
         var goodsType = $('input[name="goodsType"]').val()
-        if (!carNo || carNo.length != 5) {
+        if (!carNo || carNo.length != 5 || !isNumberOrString(carNo)) {
             alert("请输入正确的车牌号")
             return
         }
@@ -239,5 +239,10 @@
                 }
             }
         });
+    }
+
+    function isNumberOrString(str){
+        var reg=/^[0-9a-zA-Z]*$/g;
+        return reg.test(str);
     }
 </script>

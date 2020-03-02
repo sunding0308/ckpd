@@ -28,13 +28,14 @@
             <tr>
                 <th style="width: 8%;">车牌号</th>
                 <th style="width: 10%;">手机号</th>
-                <th style="width: 10%;">客户名称</th>
+                <th style="width: 8%;">物流公司</th>
+                <th style="width: 8%;">客户名称</th>
                 <th style="width: 5%;">货物重量(吨)</th>
                 <th style="width: 10%;">货物类型</th>
                 <th style="width: 5%;">车辆状态</th>
-                <th style="width: 10%;">排队时间</th>
-                <th style="width: 10%;">装车时间</th>
-                <th style="width: 10%;">发货时间</th>
+                <th style="width: 8%;">排队时间</th>
+                <th style="width: 8%;">装车时间</th>
+                <th style="width: 8%;">发货时间</th>
                 <th style="width: 7%;">排队状态</th>
                 <th style="width: 15%;">所属仓库</th>
             </tr>
@@ -42,6 +43,7 @@
                 <tr>
                     <td>{$queue.car_no}{$queue['zt']?'<span style="color: crimson; font-size: x-small; border: 1px solid crimson;">自提</span>':''}</td>
                     <td>{$queue.phone_no}</td>
+                    <td>{$queue.transport_company}</td>
                     <td>{$queue.client_name}</td>
                     <td>{$queue.goods_weight}</td>
                     <td>{$queue.goods_type}</td>
@@ -58,11 +60,11 @@
                     </if>
                     <if condition="$queue.ck eq 01">
                         <td>铜管|铜带|铜板</td>
-                    <elseif condition="$queue.states eq 02" /> 
+                    <elseif condition="$queue.ck eq 02" /> 
                         <td>铜棒</td>
-                    <elseif condition="$queue.states eq 03" /> 
+                    <elseif condition="$queue.ck eq 03" /> 
                         <td>电材</td>
-                    <elseif condition="$queue.states eq 03" /> 
+                    <elseif condition="$queue.ck eq 04" /> 
                         <td>棒线</td>
                     <else />
                         <td>铜排</td>
