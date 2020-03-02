@@ -20,7 +20,7 @@
             <div class="warehouse">
                 <div class="warehouse-title">
                     <h2>铜管|铜带|铜板仓库</h2>
-                    <h3 class="ck1-total"></h3>
+                    <span class="ck1-total"></span>
                 </div>
                 <div class="status ck1-queue-status">
                 </div>
@@ -30,7 +30,7 @@
             <div class="warehouse">
                 <div class="warehouse-title">
                     <h2>铜棒仓库</h2>
-                    <h3 class="ck2-total"></h3>
+                    <span class="ck2-total"></span>
                 </div>
                 <div class="status ck2-queue-status">
                 </div>
@@ -40,7 +40,7 @@
             <div class="warehouse">
                 <div class="warehouse-title">
                     <h2>电材仓库</h2>
-                    <h3 class="ck3-total"></h3>
+                    <span class="ck3-total"></span>
                 </div>
                 <div class="status ck3-queue-status">
                 </div>
@@ -52,7 +52,7 @@
             <div class="warehouse">
                 <div class="warehouse-title">
                     <h2>棒线仓库</h2>
-                    <h3 class="ck4-total"></h3>
+                    <span class="ck4-total"></span>
                 </div>
                 <div class="status ck4-queue-status">
                 </div>
@@ -62,7 +62,7 @@
             <div class="warehouse">
                 <div class="warehouse-title">
                     <h2>铜排仓库</h2>
-                    <h3 class="ck5-total"></h3>
+                    <span class="ck5-total"></span>
                 </div>
                 <div class="status ck5-queue-status">
                 </div>
@@ -128,9 +128,10 @@
                     let html_ck1_load = '<div>装车中</div>';
                     let ck1_total = parseInt(info.ck1Queue) + parseInt(info.ck1Load);
                     if(ck1_total>10){
-                        ck1_total = '<span style="color:red">'+ck1_total+'</span>';
+                        html_ck1_total += '仓库车辆共计 <b style="font-size:x-large;color:red;">'+ck1_total+'</b> 辆';
+                    }else{
+                        html_ck1_total += '仓库车辆共计 <b style="font-size:x-large">'+ck1_total+'</b> 辆';
                     }
-                    html_ck1_total += "仓库车辆共计 "+ck1_total+" 辆";
                     $(".ck1-total").html(html_ck1_total);
                     for (var i = 0; i < info.ck1Queue; i++) {
                         html_ck1_queue += '<svg class="icon" aria-hidden="true">';
@@ -150,9 +151,10 @@
                     let html_ck2_load = '<div>装车中</div>';
                     let ck2_total = parseInt(info.ck2Queue) + parseInt(info.ck2Load);
                     if(ck2_total>10){
-                        ck2_total = '<span style="color:red">'+ck2_total+'</span>';
+                        html_ck2_total += '仓库车辆共计 <b style="font-size:x-large;color:red;">'+ck2_total+'</b> 辆';
+                    }else{
+                        html_ck2_total += '仓库车辆共计 <b style="font-size:x-large">'+ck2_total+'</b> 辆';
                     }
-                    html_ck2_total += "仓库车辆共计 "+ck2_total+" 辆";
                     $(".ck2-total").html(html_ck2_total);
                     for (var i = 0; i < info.ck2Queue; i++) {
                         html_ck2_queue += '<svg class="icon" aria-hidden="true">';
@@ -172,9 +174,10 @@
                     let html_ck3_load = '<div>装车中</div>';
                     let ck3_total = parseInt(info.ck3Queue) + parseInt(info.ck3Load);
                     if(ck3_total>10){
-                        ck3_total = '<span style="color:red">'+ck3_total+'</span>';
+                        html_ck3_total += '仓库车辆共计 <b style="font-size:x-large;color:red;">'+ck3_total+'</b> 辆';
+                    }else{
+                        html_ck3_total += '仓库车辆共计 <b style="font-size:x-large">'+ck3_total+'</b> 辆';
                     }
-                    html_ck3_total += "仓库车辆共计 "+ck3_total+" 辆";
                     $(".ck3-total").html(html_ck3_total);
                     for (var i = 0; i < info.ck3Queue; i++) {
                         html_ck3_queue += '<svg class="icon" aria-hidden="true">';
@@ -194,9 +197,10 @@
                     let html_ck4_load = '<div>装车中</div>';
                     let ck4_total = parseInt(info.ck4Queue) + parseInt(info.ck4Load);
                     if(ck4_total>10){
-                        ck4_total = '<span style="color:red">'+ck4_total+'</span>';
+                        html_ck4_total += '仓库车辆共计 <b style="font-size:x-large;color:red;">'+ck4_total+'</b> 辆';
+                    }else{
+                        html_ck4_total += '仓库车辆共计 <b style="font-size:x-large">'+ck4_total+'</b> 辆';
                     }
-                    html_ck4_total += "仓库车辆共计 "+ck4_total+" 辆";
                     $(".ck4-total").html(html_ck4_total);
                     for (var i = 0; i < info.ck4Queue; i++) {
                         html_ck4_queue += '<svg class="icon" aria-hidden="true">';
@@ -216,9 +220,10 @@
                     let html_ck5_load = '<div>装车中</div>';
                     let ck5_total = parseInt(info.ck5Queue) + parseInt(info.ck5Load);
                     if(ck5_total>10){
-                        ck5_total = '<span style="color:red">'+ck5_total+'</span>';
+                        html_ck5_total += '仓库车辆共计 <b style="font-size:x-large;color:red;">'+ck5_total+'</b> 辆';
+                    }else{
+                        html_ck5_total += '仓库车辆共计 <b style="font-size:x-large">'+ck5_total+'</b> 辆';
                     }
-                    html_ck5_total += "仓库车辆共计 "+ck5_total+" 辆";
                     $(".ck5-total").html(html_ck5_total);
                     for (var i = 0; i < info.ck5Queue; i++) {
                         html_ck5_queue += '<svg class="icon" aria-hidden="true">';
