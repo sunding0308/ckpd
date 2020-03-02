@@ -59,7 +59,10 @@
                         </td>
                         <elseif condition="$queue.states eq 1" /> 
                         <td style="color: blue;">装车中</td>
-                        <td><input type="button" id="{$queue.id}" class=" button button-transmit" onclick="states_confirm(this)" value="完成"></td>
+                        <td>
+                            <input type="button" id="{$queue.id}" class=" button button-transmit" onclick="states_confirm(this)" value="完成">
+                            <input type="button" id="{$queue.id}" class=" button button-retract" onclick="retract_confirm(this)" value="回退">
+                        </td>
                         <else /> <td style="color: seagreen;">已发货</td><td></td>
                     </if>
                 </tr>
@@ -154,6 +157,9 @@
     .button-delete {
         background-color:black;
     }
+    .button-retract {
+        background-color:orange;
+    }
     table,table tr th, table tr td { border:1px solid #0094ff; }
     table { width: 100%; min-height: 25px; line-height: 25px; text-align: center; border-collapse: collapse;} 
     .pages{float: right}
@@ -201,6 +207,27 @@
                 type: "Post",
                 data: {
                     states: states,
+                    id: element.id,
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data.Result == "1") {
+                        window.location.reload();
+                    } else {
+                        console.log("操作失败")
+                    }
+                }
+            });
+        }
+    }
+
+    function retract_confirm(element){
+        var r=confirm("你确定"+element.value+"吗?")
+        if (r==true){
+            $.ajax({
+                url: "/Home/Queue/retract",
+                type: "Post",
+                data: {
                     id: element.id,
                 },
                 dataType: "json",

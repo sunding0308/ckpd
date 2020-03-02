@@ -76,17 +76,17 @@ class QueueController extends Controller {
         if ($states == 2) {
             $sql = 'states = 2 and queued_at >= "'.$today.'"';
             if ($carNo) {
-                $sql = 'car_no = "'.$carNo.'"';
+                $sql = 'car_no = "'.$carNo.'" and queued_at >= "'.$today.'"';
             }
         } elseif($states == 01) {
             $sql = 'states <> 2 and queued_at >= "'.$today.'"';
             if ($carNo) {
-                $sql = 'car_no = "'.$carNo.'"';
+                $sql = 'car_no = "'.$carNo.'" and queued_at >= "'.$today.'"';
             }
         } else {
             $sql = 'queued_at >= "'.$today.'"';
             if ($carNo) {
-                $sql = 'car_no = "'.$carNo.'"';
+                $sql = 'car_no = "'.$carNo.'" and queued_at >= "'.$today.'"';
             }
         }
         $queues = $queue->where($sql)->order('states asc')->page($p.',10')->select();
@@ -177,6 +177,25 @@ class QueueController extends Controller {
             } else {
                 $queue->transmited_at = date("Y-m-d H:i:s");
             }
+            $queue->save();
+    
+            $this->ajaxReturn([
+                'Result' => "1"
+            ]);
+        } else {
+            $this->ajaxReturn([
+                'Result' => "0"
+            ]);
+        }
+    }
+
+    public function retract(){
+        $id = I('id');
+        $queue = M("Queue");
+        $data = $queue->find($id);
+        if ($data) {
+            $queue->states = 0;
+            $queue->loaded_at = null;
             $queue->save();
     
             $this->ajaxReturn([
