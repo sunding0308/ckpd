@@ -86,7 +86,8 @@
     }
     .warehouse {
         width: 33%;
-        height: 40%;
+        height: 348px;
+        text-align: center;
         float: left;
         margin: 1px;
         border-radius: 1rem;
@@ -96,8 +97,7 @@
         text-align: center;
     }
     .status {
-        margin-top: 3%;
-        margin-left: 10%;
+        margin-top: 2%;
     }
     .icon {
        width: 3em; height: 3em;
@@ -127,7 +127,7 @@
                     let html_ck1_queue = '<div>排队中</div>';
                     let html_ck1_load = '<div>装车中</div>';
                     let ck1_total = parseInt(info.ck1Queue) + parseInt(info.ck1Load);
-                    if(ck1_total>10){
+                    if(ck1_total>=15){
                         html_ck1_total += '仓库车辆共计 <b style="font-size:x-large;color:red;">'+ck1_total+'</b> 辆';
                     }else{
                         html_ck1_total += '仓库车辆共计 <b style="font-size:x-large">'+ck1_total+'</b> 辆';
@@ -150,7 +150,7 @@
                     let html_ck2_queue = '<div>排队中</div>';
                     let html_ck2_load = '<div>装车中</div>';
                     let ck2_total = parseInt(info.ck2Queue) + parseInt(info.ck2Load);
-                    if(ck2_total>10){
+                    if(ck2_total>=12){
                         html_ck2_total += '仓库车辆共计 <b style="font-size:x-large;color:red;">'+ck2_total+'</b> 辆';
                     }else{
                         html_ck2_total += '仓库车辆共计 <b style="font-size:x-large">'+ck2_total+'</b> 辆';
@@ -173,7 +173,7 @@
                     let html_ck3_queue = '<div>排队中</div>';
                     let html_ck3_load = '<div>装车中</div>';
                     let ck3_total = parseInt(info.ck3Queue) + parseInt(info.ck3Load);
-                    if(ck3_total>10){
+                    if(ck3_total>=15){
                         html_ck3_total += '仓库车辆共计 <b style="font-size:x-large;color:red;">'+ck3_total+'</b> 辆';
                     }else{
                         html_ck3_total += '仓库车辆共计 <b style="font-size:x-large">'+ck3_total+'</b> 辆';
@@ -196,7 +196,7 @@
                     let html_ck4_queue = '<div>排队中</div>';
                     let html_ck4_load = '<div>装车中</div>';
                     let ck4_total = parseInt(info.ck4Queue) + parseInt(info.ck4Load);
-                    if(ck4_total>10){
+                    if(ck4_total>=10){
                         html_ck4_total += '仓库车辆共计 <b style="font-size:x-large;color:red;">'+ck4_total+'</b> 辆';
                     }else{
                         html_ck4_total += '仓库车辆共计 <b style="font-size:x-large">'+ck4_total+'</b> 辆';
@@ -219,7 +219,7 @@
                     let html_ck5_queue = '<div>排队中</div>';
                     let html_ck5_load = '<div>装车中</div>';
                     let ck5_total = parseInt(info.ck5Queue) + parseInt(info.ck5Load);
-                    if(ck5_total>10){
+                    if(ck5_total>=12){
                         html_ck5_total += '仓库车辆共计 <b style="font-size:x-large;color:red;">'+ck5_total+'</b> 辆';
                     }else{
                         html_ck5_total += '仓库车辆共计 <b style="font-size:x-large">'+ck5_total+'</b> 辆';

@@ -119,6 +119,44 @@ class QueueController extends Controller {
         $this->display('form');
     }
 
+    public function bindUidForm(){
+        $uid = $_REQUEST['uid'];
+        $this->assign('uid',$uid);
+
+        $this->display('bind_uid_form');
+    }
+
+    public function bindUid(){
+        $uid = I('uid');
+        $carNo = strtoupper(I('carNo'));
+        $carNo = str_replace('O', '0', $carNo);
+        $carNo = str_replace('I', '1', $carNo);
+
+        $CarNoUid = M("CarNoUid");
+        $res = $CarNoUid->where('uid="'.$uid.'"')->find();
+        if($res){
+            $CarNoUid->where('uid="'.$uid.'"')->setField('car_no',$carNo);
+
+            $this->ajaxReturn([
+                'Result' => "1",
+                'Data' => [
+                    'Message' => '更改绑定车牌成功！'
+                ],
+            ]);
+        }else{
+            $data['uid'] = $uid;
+            $data['car_no'] = $carNo;
+            $CarNoUid->add($data);
+
+            $this->ajaxReturn([
+                'Result' => "1",
+                'Data' => [
+                    'Message' => '绑定车牌成功！'
+                ],
+            ]);
+        }
+    }
+
     public function submit(){
         $carNo = strtoupper(I('carNo'));
         $phoneNo = I('phoneNo');
@@ -173,9 +211,16 @@ class QueueController extends Controller {
         if ($data) {
             $queue->states = $states;
             if ($states == 1) {
+                $CarNoUid = M("CarNoUid");
+                $res = $CarNoUid->where('car_no="'.$data['car_no'].'"')->find();
                 $queue->loaded_at = date("Y-m-d H:i:s");
                 //点击装车发送短信给司机
                 // SmsService::sendYzxSms($data['phone_no'],$data['car_no'],C('cks')[$data['ck']]);
+                if($res){
+                    $content = urlencode("亲爱的 ".$data['car_no']." 车主，您的货物即将准备装车，请尽快将车辆开往发货台。 —".C('cks')[$data['ck']]."仓库管理中心");
+                    $url="http://wxpusher.zjiecode.com/api/send/message/?appToken=AT_X3zrNKfXRW8ctWQXvRe36F4FlsEAZWWn&uid=".$res['uid']."&content=".$content;
+                    getUrl($url);
+                }
             } else {
                 $queue->transmited_at = date("Y-m-d H:i:s");
             }

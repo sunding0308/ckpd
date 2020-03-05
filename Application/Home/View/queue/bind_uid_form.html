@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>车辆绑定</title>
+</head>
+<body>
+    <div class="logo">
+        <img src="/Public/img/金田logo.png">
+    </div>
+    <hr>
+    <div class="form">
+        <h4 class="title">车辆绑定</h4>
+        <div class="info">
+            <span id="successInfo"></span>
+            <span id="errorInfo"></span>
+        </div>
+        <div class="input-area">
+            <form action="" method="POST">
+                <div>
+                    <label>车牌号码: </label>
+                    <input type="text" name="carNo" placeholder="后5位车牌号" maxlength="5">
+                </div>
+                <input type="hidden" name="uid" value="{$uid}">
+            </form>
+        </div>
+        <button type="button" onclick="submitForm()">绑定</button>
+    </div>
+</body>
+</html>
+
+<style>
+    form {
+        font-family: STXihei, "微软雅黑", "Microsoft YaHei", "微软雅黑";
+    }
+    .logo {
+        background-image:url("/Public/img/background.jpg");
+        height: 244px;
+        text-align: center;
+    }
+    .title {
+        color: rgb(10, 170, 170);
+        font-size:20px;
+    }
+    .info {
+        height: 5%;
+    }
+    .form {
+        text-align: center;
+    }
+    .input-area {
+        padding-top: 10px;
+    }
+    input {
+        margin-left: 10px;
+        text-align:center;
+        border: 1px solid rgb(216, 216, 216);
+    }
+    input::-ms-input-placeholder {
+        text-align: center;
+    }
+    input::-webkit-input-placeholder {
+        text-align: center;
+    }
+    button {
+        margin-top: 20px;
+        background-color:royalblue;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        text-decoration: none;
+        display: inline-block;
+        width: 50%;
+        height: 30px;
+    }
+    #successInfo {
+        color: green;
+    }
+    #errorInfo {
+        color:orange;
+    }
+</style>
+
+<script src="/Public/js/jquery-1.10.2.min.js"></script>
+<script>
+    function submitForm() {
+        var carNo = $("input[name='carNo']").val()
+        var uid = $("input[name='uid']").val()
+        if (!carNo || carNo.length != 5 || !isNumberOrString(carNo)) {
+            alert("请输入正确的车牌号")
+            return
+        }
+        var obj = {
+            carNo: carNo,
+            uid: uid
+        }
+        doSubmit(obj);
+    }
+
+    function doSubmit(obj) { 
+        $.ajax({
+            url: "/Home/queue/bindUid",
+            type: "POST",
+            data: obj,
+            dataType: "json",
+            success: function (data) {
+                $("input[name='carNo']").val('');
+                var info = data.Data;
+                if (data.Result == "1") {
+                    $("#errorInfo").html('');
+                    $("#successInfo").html(info.Message);
+                } else {
+                    $("#successInfo").html('');
+                    $("#errorInfo").html(info.Message);
+                }
+            }
+        });
+    }
+
+    function isNumberOrString(str){
+        var reg=/^[0-9a-zA-Z]*$/g;
+        return reg.test(str);
+    }
+</script>
