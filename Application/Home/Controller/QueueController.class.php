@@ -217,7 +217,7 @@ class QueueController extends Controller {
                 //点击装车发送短信给司机
                 // SmsService::sendYzxSms($data['phone_no'],$data['car_no'],C('cks')[$data['ck']]);
                 if($res){
-                    $content = urlencode("亲爱的 ".$data['car_no']." 车主，您的货物即将准备装车，请尽快将车辆开往发货台。 —".C('cks')[$data['ck']]."仓库管理中心");
+                    $content = urlencode("您好！ 【".$data['car_no']."】 车主，您的货物即将准备装车，请尽快将车辆开往发货台。 — ".C('cks')[$data['ck']]."仓库管理中心");
                     $url="http://wxpusher.zjiecode.com/api/send/message/?appToken=AT_X3zrNKfXRW8ctWQXvRe36F4FlsEAZWWn&uid=".$res['uid']."&content=".$content;
                     getUrl($url);
                 }

@@ -84,6 +84,7 @@
                         } else {
                             var States = '装车中';
                             var color = 'blue';
+                        html += '<span style="float: left; margin-left:10%; font-size:140%">已等待<B style="color:rgb(187, 16, 178)">' + WaitTime(nowHtml.queued_at) + '</B>分钟</span>';
                         }
                         html += '<span style="float: right; margin-right: 40px">'
                                 + '<span style="color: ' + color + '; font-size:140%">' + States + '</span>'
