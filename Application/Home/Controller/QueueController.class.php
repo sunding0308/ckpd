@@ -2,7 +2,6 @@
 namespace Home\Controller;
 use Think\Controller;
 use Home\Service\SqlsrvService;
-// use Home\Service\SmsService;
 
 class QueueController extends Controller {
 
@@ -194,6 +193,9 @@ class QueueController extends Controller {
             $queue->states = 0;
             $queue->add();
 
+            $wait = M("Wait");
+            $wait->where('phone_no='."'$phoneNo'")->delete();
+
             $this->ajaxReturn([
                 'Result' => "1",
                 'Data' => [
@@ -214,8 +216,6 @@ class QueueController extends Controller {
                 $CarNoUid = M("CarNoUid");
                 $res = $CarNoUid->where('car_no="'.$data['car_no'].'"')->find();
                 $queue->loaded_at = date("Y-m-d H:i:s");
-                //点击装车发送短信给司机
-                // SmsService::sendYzxSms($data['phone_no'],$data['car_no'],C('cks')[$data['ck']]);
                 if($res){
                     $content = urlencode("您好！ 【".$data['car_no']."】 车主，您的货物即将准备装车，请尽快将车辆开往发货台。 — ".C('cks')[$data['ck']]."仓库管理中心");
                     $url="http://wxpusher.zjiecode.com/api/send/message/?appToken=AT_X3zrNKfXRW8ctWQXvRe36F4FlsEAZWWn&uid=".$res['uid']."&content=".$content;
@@ -333,6 +333,12 @@ class QueueController extends Controller {
         $ck4Load = $queue->where('ck = "04" and states = 1')->count();
         $ck5Queue = $queue->where('ck = "05" and states = 0')->count();
         $ck5Load = $queue->where('ck = "05" and states = 1')->count();
+        $wait = M('Wait');
+        $waitCk1 = $wait->where('ck = "01"')->count();
+        $waitCk2 = $wait->where('ck = "02"')->count();
+        $waitCk3 = $wait->where('ck = "03"')->count();
+        $waitCk4 = $wait->where('ck = "04"')->count();
+        $waitCk5 = $wait->where('ck = "05"')->count();
 
         $this->ajaxReturn([
             'Result' => "1",
@@ -346,8 +352,36 @@ class QueueController extends Controller {
                 'ck4Queue' => $ck4Queue,
                 'ck4Load' => $ck4Load,
                 'ck5Queue' => $ck5Queue,
-                'ck5Load' => $ck5Load
+                'ck5Load' => $ck5Load,
+                'waitCk1' => $waitCk1,
+                'waitCk2' => $waitCk2,
+                'waitCk3' => $waitCk3,
+                'waitCk4' => $waitCk4,
+                'waitCk5' => $waitCk5
             ],
         ]);
+    }
+
+    public function getWaitInfo(){
+        $carNo = I('car_no');
+        $wait = M("Wait");
+        $res = $wait->where('car_no='."'$carNo'")->find();
+
+        if ($res) {
+            $this->ajaxReturn([
+                'Result' => "1",
+                'Data' => [
+                    'phoneNo' => $res['phone_no'],
+                    'transportCompany' => $res['transport_company']
+                ],
+            ]);
+        } else {
+            $this->ajaxReturn([
+                'Result' => "0",
+                'Data' => [
+                    'Message' => '获取等待区排队信息失败！'
+                ],
+            ]);
+        }
     }
 }

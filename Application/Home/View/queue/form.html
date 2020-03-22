@@ -21,7 +21,7 @@
             <form action="" method="POST">
                 <div>
                     <label>车牌号码: </label>
-                    <input type="text" name="carNo" placeholder="后5位车牌号" maxlength="5">
+                    <input type="text" name="carNo" placeholder="后5位车牌号" maxlength="5" onblur="getWaitInfo()">
                 </div>
                 <div class="field">
                     <label>手机号码: </label>
@@ -236,6 +236,24 @@
                 } else {
                     $("#successInfo").html('');
                     $("#errorInfo").html(info.Message);
+                }
+            }
+        });
+    }
+
+    function getWaitInfo(){
+        $.ajax({
+            url: "/Home/queue/getWaitInfo",
+            type: "GET",
+            data: {car_no: $("input[name='carNo']").val()},
+            dataType: "json",
+            success: function (data) {
+                var info = data.Data;
+                if (data.Result == "1") {
+                    $("input[name='phoneNo']").val(info.phoneNo);
+                    $("input[name='transportCompany']").val(info.transportCompany);
+                } else {
+                    console.log(info.Message);
                 }
             }
         });
