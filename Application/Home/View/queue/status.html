@@ -247,11 +247,11 @@
                     $(".ck5-load-status").html(html_ck5_load);
                     //等待区
                     let html_wait_total ='';
-                    let html_wait = '<div>铜管|铜带|铜板：'+info.waitCk1+' 辆</div>'
-                                    +'<div>铜棒：'+info.waitCk2+' 辆</div>'
-                                    +'<div>电材：'+info.waitCk3+' 辆</div>'
-                                    +'<div>棒线：'+info.waitCk4+' 辆</div>'
-                                    +'<div>铜排：'+info.waitCk5+' 辆</div>';
+                    let html_wait = '<div style="margin-bottom:10px">铜管|铜带|铜板：'+info.waitCk1+' 辆</div>'
+                                    +'<div style="margin-bottom:10px">铜棒：'+info.waitCk2+' 辆</div>'
+                                    +'<div style="margin-bottom:10px">电材：'+info.waitCk3+' 辆</div>'
+                                    +'<div style="margin-bottom:10px">棒线：'+info.waitCk4+' 辆</div>'
+                                    +'<div style="margin-bottom:10px">铜排：'+info.waitCk5+' 辆</div>';
                     let wait_total = parseInt(info.waitCk1) + parseInt(info.waitCk2) + parseInt(info.waitCk3) + parseInt(info.waitCk4) + parseInt(info.waitCk5);
 
                     html_wait_total += '等待区车辆共计 <b style="font-size:x-large">'+wait_total+'</b> 辆';

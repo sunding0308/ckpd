@@ -28,6 +28,38 @@ class WaitController extends Controller {
         $this->display();
     }
 
+    public function list(){
+        $wait = M('Wait');
+        $carNo = I('car_no');
+        $ck = I('ck');
+        $cks = C('cks');
+        $p = $_GET['p'] == NULL ? 1:$_GET['p'];
+        if ($carNo) {
+            $sql = 'car_no = "'.$carNo.'"';
+        }
+        if ($ck) {
+            $sql = 'ck = '.$ck;
+        }
+        if ($carNo && $ck) {
+            $sql = 'car_no = "'.$carNo.'" and ck = '.$ck;
+        }
+        // 进行分页数据查询 注意page方法的参数的前面部分是当前的页数使用 $_GET[p]获取
+        if (isset($sql)) {
+            $waits = $wait->where($sql)->order('waited_at desc')->page($p.',10')->select();
+            $count = $wait->where($sql)->count();
+        } else {
+            $waits = $wait->order('waited_at desc')->page($p.',10')->select();
+            $count = $wait->count();
+        }
+        $this->assign('waits', $waits);// 赋值数据集
+        $this->assign('ck', $ck);
+        $this->assign('cks', $cks);
+        $Page = new \Think\Page($count,10);// 实例化分页类 传入总记录数和每页显示的记录数
+        $show = $Page->show();// 分页显示输出
+        $this->assign('page',$show);// 赋值分页输出
+        $this->display(); // 输出模板
+    }
+
     public function submit(){
         $phoneNo = I('phoneNo');
         $carNo = strtoupper(I('carNo'));
