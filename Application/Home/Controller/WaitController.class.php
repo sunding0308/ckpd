@@ -67,6 +67,13 @@ class WaitController extends Controller {
             $content = urlencode("您好！ 【".$car_no."】 车主，您现在可以进场，请尽快前往目标仓库排队。");
             $url="http://wxpusher.zjiecode.com/api/send/message/?appToken=AT_X3zrNKfXRW8ctWQXvRe36F4FlsEAZWWn&uid=".$res['uid']."&content=".$content;
             getUrl($url);
+        } else {
+            $this->ajaxReturn([
+                'Result' => "0",
+                'Data' => [
+                    'Message' => '该车辆的用户未关注公众号并绑定车牌号，请电话通知。'
+                ],
+            ]);
         }
         
         $this->ajaxReturn([
