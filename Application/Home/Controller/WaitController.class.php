@@ -53,11 +53,28 @@ class WaitController extends Controller {
         }
         $this->assign('waits', $waits);// 赋值数据集
         $this->assign('ck', $ck);
-        $this->assign('cks', $cks);
         $Page = new \Think\Page($count,10);// 实例化分页类 传入总记录数和每页显示的记录数
         $show = $Page->show();// 分页显示输出
         $this->assign('page',$show);// 赋值分页输出
         $this->display(); // 输出模板
+    }
+
+    public function notify(){
+        $CarNoUid = M("CarNoUid");
+        $car_no = I('car_no');
+        $res = $CarNoUid->where('car_no="'.$car_no.'"')->find();
+        if($res){
+            $content = urlencode("您好！ 【".$car_no."】 车主，您现在可以进场，请尽快前往目标仓库排队。");
+            $url="http://wxpusher.zjiecode.com/api/send/message/?appToken=AT_X3zrNKfXRW8ctWQXvRe36F4FlsEAZWWn&uid=".$res['uid']."&content=".$content;
+            getUrl($url);
+        }
+        
+        $this->ajaxReturn([
+            'Result' => "1",
+            'Data' => [
+                'Message' => '通知成功'
+            ],
+        ]);
     }
 
     public function submit(){

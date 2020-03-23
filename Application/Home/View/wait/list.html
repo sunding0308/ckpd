@@ -53,7 +53,7 @@
                     </if>
                     <td>{$wait.waited_at}</td>
                     <td>
-                        <input type="button" id="{$wait.id}" class=" button button-enter" onclick="enter_confirm(this)" value="通知进场">
+                        <input type="button" id="{$wait.car_no}" class=" button button-enter" onclick="enter_confirm(this)" value="通知进场">
                     </td>
                 </tr>
             </foreach>
@@ -135,17 +135,8 @@
         display: inline-block;
         height: 30px;
     }
-    .button-load {
-        background-color:royalblue;
-    }
-    .button-priority {
-        background-color: red;
-    }
-    .button-transmit {
+    .button-enter {
         background-color:rgb(8, 114, 13);
-    }
-    .button-delete {
-        background-color:black;
     }
     table,table tr th, table tr td { border:1px solid #0094ff; }
     table { width: 100%; min-height: 25px; line-height: 25px; text-align: center; border-collapse: collapse;} 
@@ -201,15 +192,15 @@
         var r=confirm("你确定"+element.value+"吗?")
         if (r==true){
             $.ajax({
-                url: "/ckpd/Home/Wait/notice",
+                url: "/ckpd/Home/Wait/notify",
                 type: "Post",
                 data: {
-                    id: element.id,
+                    car_no: element.id,
                 },
                 dataType: "json",
                 success: function (data) {
                     if (data.Result == "1") {
-                        alert(data);
+                        alert(data.Data.Message);
                     } else {
                         console.log("操作失败")
                     }
