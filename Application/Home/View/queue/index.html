@@ -14,15 +14,22 @@
             <ol id="car_list"></ol>
         </marquee>
         <div class="qr-code">
-            <div>
-                <img src="/Public/img/金田logo.png">
+            <div class="queue-qr-code">
+                <div>
+                    <img src="/Public/img/金田logo.png">
+                </div>
+                <div>
+                    <img src="/home/queue/qrcode?ck={$ck}" width="300" height="300"/>
+                </div>
+                <div class="description"><span>扫描二维码，进入排队系统</span></div>
+                <hr>
+                <div>今日排队总车辆：<span id="todayTotal"></span><br>已完成：<span id="finished"></span> 排队中: <span id="queuing"></span></div>
+                <hr>
             </div>
-            <div>
-                <img src="/home/queue/qrcode?ck={$ck}" width="300" height="300"/>
+            <div class="gzh-qr-code">
+                <span>扫描二维码，绑定车辆信息↓</span>
+                <img style="width:100%; height:auto;" src="http://wxpusher.zjiecode.com/api/qrcode/mWPNEfMxu8W4phi0ctXvkKPWjVqWjtGwZNQDb2z2upPWgyJvvoLIQV3OiakVaTZB.jpg">
             </div>
-            <div class="description"><span>扫描二维码，进入排队系统</span></div>
-            <hr>
-            <div>今日排队总车辆：<span id="todayTotal"></span><br>已完成：<span id="finished"></span> 排队中: <span id="queuing"></span></div>
         </div>
     </div>
 </body>
@@ -39,6 +46,17 @@
         text-align: center;
         float: right;
         width: 30%;
+    }
+    .queue-qr-code {
+        position: relative;
+        bottom: 80px;
+    }
+    .gzh-qr-code {
+        position: relative;
+        bottom: 90px;
+        margin: 0 auto;
+        width: 200px;
+        height: 200px;
     }
     .description {
         text-align: center;
@@ -84,7 +102,7 @@
                         } else {
                             var States = '装车中';
                             var color = 'blue';
-                        html += '<span style="float: left; margin-left:10%; font-size:140%">已等待<B style="color:rgb(187, 16, 178)">' + WaitTime(nowHtml.queued_at) + '</B>分钟</span>';
+                            html += '<span style="float: left; margin-left:10%; font-size:140%">已等待<B style="color:rgb(187, 16, 178)">' + WaitTime(nowHtml.queued_at) + '</B>分钟</span>';
                         }
                         html += '<span style="float: right; margin-right: 40px">'
                                 + '<span style="color: ' + color + '; font-size:140%">' + States + '</span>'

@@ -33,8 +33,19 @@
                     for (var i = 0; i < info.wait.length; i++) {
                         html += "<hr>";
                         var nowHtml = info.wait[i];
+                        if (nowHtml.ck == 01) {
+                            ck = '铜管|铜带|铜板';
+                        } else if (nowHtml.ck == 02) {
+                            ck = '铜棒';
+                        } else if (nowHtml.ck == 03) {
+                            ck = '电材';
+                        } else if (nowHtml.ck == 04) {
+                            ck = '棒线';
+                        } else {
+                            ck = '铜排';
+                        }
                         html +='<li>'
-                            + '<span style="float: left; margin-left:5%; width:10%; font-size:140%">' + nowHtml.car_no + '</span>';
+                            + '<span style="margin-left:5%; width:10%; font-size:140%">' + nowHtml.car_no + '[<span style="font-size:50%">' + ck + '</span>]' + '</span>';
                         html += '<span style="float: right; margin-left:10%; font-size:140%">已等待<B style="color:rgb(187, 16, 178)">' + WaitTime(nowHtml.waited_at) + '</B>分钟</span>';
                     }
                     $("#car_list").html(html);

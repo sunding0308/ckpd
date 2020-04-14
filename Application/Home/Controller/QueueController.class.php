@@ -194,7 +194,7 @@ class QueueController extends Controller {
             $queue->add();
 
             $wait = M("Wait");
-            $wait->where('phone_no='."'$phoneNo'")->delete();
+            $wait->where('car_no='."'$carNo'")->delete();
 
             $this->ajaxReturn([
                 'Result' => "1",
