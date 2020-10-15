@@ -118,6 +118,70 @@ class QueueController extends Controller {
         $this->display('form');
     }
 
+    public function locationNavi(){
+        $this->display('location_navi');
+    }
+
+    public function locationForm(){
+        $ck = I('ck');
+        $zt = I('zt');
+        $cks = C('cks');
+        
+        $this->assign('ck',$ck);
+        $this->assign('zt',$zt);
+        $this->assign('cks',$cks);
+        $this->display('location_form');
+    }
+
+    public function locationIndex(){
+        $ck = I('ck');
+        $cks = C('cks');
+        $this->assign('ck',$ck);
+        $this->assign('cks',$cks);
+        $this->display('location_index');
+    }
+
+    public function GetLocationList(){
+        $queue = M("Queue");
+        $ck = I('ck');
+        $today = date("Y-m-d 00:00:00");
+        $queue = $queue->where('queued_at >= "'.$today.'"')->where('ck = '.$ck)->order('queued_at asc')->select();
+        
+        $this->ajaxReturn([
+            'Result' => "1",
+            'Data' => [
+                'queue' => $queue
+            ],
+        ]);
+    }
+
+    public function notify(){
+        $CarNoUid = M("CarNoUid");
+        $queue = M("Queue");
+        $id = I('id');
+        $queue = $queue->where('id = '.$id)->find();
+        $res = $CarNoUid->where('car_no="'.$queue['car_no'].'"')->find();
+        if($res){
+            $content = urlencode("您好！ 【".$queue['car_no']."】 车主，您现在可以进厂，请尽快前往目标仓库装车。");
+            $url="http://wxpusher.zjiecode.com/api/send/message/?appToken=AT_X3zrNKfXRW8ctWQXvRe36F4FlsEAZWWn&uid=".$res['uid']."&content=".$content;
+            getUrl($url);
+        } else {
+            $this->ajaxReturn([
+                'Result' => "0",
+                'Data' => [
+                    'Message' => '该车辆的用户未关注公众号并绑定车牌号，请电话通知。'
+                ],
+            ]);
+        }
+        
+        $this->ajaxReturn([
+            'Result' => "1",
+            'Data' => [
+                'Message' => '通知成功'
+            ],
+        ]);
+    }
+
     public function bindUidForm(){
         $uid = $_REQUEST['uid'];
         $this->assign('uid',$uid);
@@ -196,11 +260,176 @@ class QueueController extends Controller {
             $wait = M("Wait");
             $wait->where('car_no='."'$carNo'")->delete();
 
+            $this->updateReserveStatus($carNo,40);
+
             $this->ajaxReturn([
                 'Result' => "1",
                 'Data' => [
                     'Message' => '提交成功！'
                 ],
+            ]);
+        }
+    }
+
+    public function submit4Vms(){
+        $post = json_decode(file_get_contents('php://input'), true);
+        $carNo = substr(strtoupper($post['carNo']),-5);
+        $phoneNo = $post['phoneNo'];
+        $transportCompany = $post['transportCompany'];
+        $clientName = $post['clientName'];
+        $goodsWeight = $post['goodsWeight'];
+        $goodsType = $post['type'];
+        $ck = $post['ck'];
+        switch ($ck) {
+            case '智能仓库（铜管、铜带、铜板）':
+                $ck = '01';
+                break;
+            case '铜棒仓库':
+                $ck = '02';
+                break;
+            case '电材仓库':
+                $ck = '03';
+                break;
+            case '棒线仓库':
+                $ck = '04';
+                break;
+            case '铜排仓库':
+                $ck = '05';
+                break;
+            default:
+                break;
+        }
+        $zt = $post['zt'] == 'true' ? 1 : 0;
+        $carNo = str_replace('O', '0', $carNo);
+        $carNo = str_replace('I', '1', $carNo);
+        $queue = M("Queue");
+        $data = $queue->where('car_no='."'$carNo'".' AND states <> 2')->find();
+        
+        if ($data) {
+            $this->ajaxReturn([
+                'Result' => "0",
+                'Data' => [
+                    'Message' => $data['car_no'].' 已在'.C('cks')[$data['ck']].'仓库排队中！'
+                ],
+            ]);
+        } else {
+            $queue->car_no = $carNo;
+            $queue->phone_no = $phoneNo;
+            $queue->transport_company = $transportCompany;
+            $queue->client_name = $clientName;
+            $queue->goods_weight = $goodsWeight;
+            $queue->goods_type = $goodsType;
+            $queue->car_states = '空车';
+            $queue->ck = $ck;
+            $queue->zt = $zt;
+            $queue->queued_at = date("Y-m-d H:i:s");
+            $queue->states = 0;
+            $queue->add();
+
+            $wait = M("Wait");
+            $wait->where('car_no='."'$carNo'")->delete();
+
+            $this->ajaxReturn([
+                'Result' => "1",
+                'Data' => [
+                    'Message' => '提交成功！'
+                ],
+            ]);
+        }
+    }
+
+    public function submit4Scan(){
+        header('Access-Control-Allow-Origin:*');
+        $post = json_decode(file_get_contents('php://input'), true);
+        $carNo = substr(strtoupper($post['carNo']),-5);
+        $phoneNo = $post['phoneNo'];
+        $transportCompany = $post['transportCompany'];
+        $clientName = $post['clientName'];
+        $goodsWeight = $post['goodsWeight'];
+        $goodsType = $post['type'];
+        $ck = $post['ck'];
+        switch ($ck) {
+            case '智能仓库（铜管、铜带、铜板）':
+                $ck = '01';
+                break;
+            case '铜棒仓库':
+                $ck = '02';
+                break;
+            case '电材仓库':
+                $ck = '03';
+                break;
+            case '棒线仓库':
+                $ck = '04';
+                break;
+            case '铜排仓库':
+                $ck = '05';
+                break;
+            default:
+                break;
+        }
+        $zt = $post['zt'] == 'true' ? 1 : 0;
+        $carNo = str_replace('O', '0', $carNo);
+        $carNo = str_replace('I', '1', $carNo);
+        $queue = M("Queue");
+        $data = $queue->where('car_no='."'$carNo'".' AND states <> 2')->find();
+        
+        if ($data) {
+            $this->ajaxReturn([
+                'Result' => "0",
+                'Data' => [
+                    'Message' => $data['car_no'].' 已在'.C('cks')[$data['ck']].'仓库排队中！'
+                ],
+            ]);
+        } else {
+            $res = $this->checkCar4Scan($carNo);
+            if (!$res['status']) {
+                $this->ajaxReturn([
+                    'Result' => "0",
+                    'Data' => [
+                        'Message' => $res['msg']
+                    ],
+                ]);
+            }
+            $queue->car_no = $carNo;
+            $queue->phone_no = $phoneNo;
+            $queue->transport_company = $transportCompany;
+            $queue->client_name = $clientName;
+            $queue->goods_weight = $goodsWeight;
+            $queue->goods_type = $goodsType;
+            $queue->car_states = '空车';
+            $queue->ck = $ck;
+            $queue->zt = $zt;
+            $queue->queued_at = date("Y-m-d H:i:s");
+            $queue->states = 0;
+            $queue->add();
+
+            $this->updateReserveStatus($carNo,40);
+
+            $this->ajaxReturn([
+                'Result' => "1",
+                'Data' => [
+                    'Message' => C('cks')[$data['ck']].'仓库排队成功！'
+                ],
+            ]);
+        }
+    }
+
+    public function changeStates4Oa(){
+        $post = json_decode(file_get_contents('php://input'), true);
+        $carNo = $post['carNo'];
+        $queue = M("Queue");
+        $data = $queue->where('car_no="'.$carNo.'"')->find();
+        if ($data) {
+            $queue->states = 2;
+            $queue->transmited_at = date("Y-m-d H:i:s");
+            $queue->save();
+    
+            $this->ajaxReturn([
+                'Result' => "1"
+            ]);
+        } else {
+            $this->ajaxReturn([
+                'Result' => "0"
             ]);
         }
     }
@@ -223,6 +452,7 @@ class QueueController extends Controller {
                 }
             } else {
                 $queue->transmited_at = date("Y-m-d H:i:s");
+                $this->updateReserveStatus($data['car_no'],50);
             }
             $queue->save();
     
@@ -308,6 +538,22 @@ class QueueController extends Controller {
         }
     }
 
+    public function checkCar4Scan($carNo){
+        $carNo = str_replace('O', '0', $carNo);
+        $carNo = str_replace('I', '1', $carNo);
+        $re = SqlsrvService::checkCarNo($carNo);
+        if ($re['status']) {
+            return [
+                'status' => "1"
+            ];
+        } else {
+            return [
+                'status' => "0",
+                'msg' => $re['msg']
+            ];
+        }
+    }
+
     public function qrcode(){
         Vendor('phpqrcode.phpqrcode');
         $ck = I('ck');
@@ -382,6 +628,36 @@ class QueueController extends Controller {
                     'Message' => '获取等待区排队信息失败！'
                 ],
             ]);
+        }
+    }
+
+    public function download(){
+        $in=  fopen('http://wxpusher.zjiecode.com/api/qrcode/mWPNEfMxu8W4phi0ctXvkKPWjVqWjtGwZNQDb2z2upPWgyJvvoLIQV3OiakVaTZB.jpg', "rb");
+        $out=  fopen('Public/img/showqrcode.jpg', "wb");
+        while ($chunk = fread($in,8192))
+        {
+            fwrite($out, $chunk, 8192);
+        }
+        fclose($in);
+        fclose($out);
+
+        echo '下载成功';
+    }
+
+    public function updateReserveStatus($carNo='BTEST',$status=40){
+        $data = posturl('http://192.168.60.160:8080/jtvms/restzvms043/getReserveInfo.do',json_encode([
+            "RESERVATION_NO"=> "",
+            "WECHATID"=> "",
+            "CAR_LICENSE"=> $carNo
+        ]));
+        if($data->code == '90001'){
+            $reservationNo = $data->data->RESERVATION_NO;
+            $data = posturl('http://192.168.60.160:8080/jtvms/restzvms043/updateReserveStatus.do',json_encode([
+                "RESERVATION_NO"=> $reservationNo,
+                "BUSINESS_STATUS"=> $status
+            ]));
+        }else{
+            echo $data->message;
         }
     }
 }

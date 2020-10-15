@@ -53,6 +53,7 @@
                     <if condition="$queue.states eq 0">
                         <td style="color: tomato;" >排队中</td>
                         <td>
+                            <input type="button" id="{$queue.id}" class="button button-notify" onclick="notify(this)" value="通知进厂">
                             <input type="button" id="{$queue.id}" class="button button-load" onclick="states_confirm(this)" value="装车">
                             <if condition="$queue.priority eq 0">
                                 <input type="button" id="{$queue.id}" class="button button-priority" onclick="priority_confirm(this)" value="加急">
@@ -147,6 +148,9 @@
         display: inline-block;
         height: 30px;
     }
+    .button-notify {
+        background-color:darkmagenta;
+    }
     .button-load {
         background-color:royalblue;
     }
@@ -195,6 +199,29 @@
 
 <script src="/Public/js/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
+    function notify(element){
+        var r=confirm("你确定"+element.value+"吗?")
+        if (r==true){
+
+            $.ajax({
+                url: "/Home/Queue/notify",
+                type: "Post",
+                data: {
+                    id: element.id,
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data.Result == "1") {
+                        alert(data.Data.Message);
+                    } else {
+                        alert(data.Data.Message);
+                        console.log("操作失败")
+                    }
+                }
+            });
+        }
+    }
+
     function states_confirm(element){
         var r=confirm("你确定"+element.value+"吗?")
         if (r==true){

@@ -14,7 +14,8 @@ class WaitController extends Controller {
 
     public function GetWaitList(){
         $wait = M("Wait");
-        $wait = $wait->order('waited_at asc')->select();
+        $today = date("Y-m-d 00:00:00");
+        $wait = $wait->where('waited_at >= "'.$today.'"')->order('waited_at asc')->select();
         
         $this->ajaxReturn([
             'Result' => "1",
@@ -33,22 +34,23 @@ class WaitController extends Controller {
         $carNo = I('car_no');
         $ck = I('ck');
         $cks = C('cks');
+        $today = date("Y-m-d 00:00:00");
         $p = $_GET['p'] == NULL ? 1:$_GET['p'];
         if ($carNo) {
-            $sql = 'car_no = "'.$carNo.'"';
+            $sql = 'car_no = "'.$carNo.'" and waited_at >= "'.$today.'"';
         }
         if ($ck) {
-            $sql = 'ck = '.$ck;
+            $sql = 'ck = '.$ck.' and waited_at >= "'.$today.'"';
         }
         if ($carNo && $ck) {
-            $sql = 'car_no = "'.$carNo.'" and ck = '.$ck;
+            $sql = 'car_no = "'.$carNo.'" and ck = '.$ck.' and waited_at >= "'.$today.'"';
         }
         // 进行分页数据查询 注意page方法的参数的前面部分是当前的页数使用 $_GET[p]获取
         if (isset($sql)) {
             $waits = $wait->where($sql)->order('waited_at asc')->page($p.',10')->select();
             $count = $wait->where($sql)->count();
         } else {
-            $waits = $wait->order('waited_at asc')->page($p.',10')->select();
+            $waits = $wait->where('waited_at >= "'.$today.'"')->order('waited_at asc')->page($p.',10')->select();
             $count = $wait->count();
         }
         $this->assign('waits', $waits);// 赋值数据集
