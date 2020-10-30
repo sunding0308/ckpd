@@ -233,6 +233,28 @@ class QueueController extends Controller {
         $carNo = str_replace('O', '0', $carNo);
         $carNo = str_replace('I', '1', $carNo);
         $goodsType = implode(',', $type);
+
+        $reserveInfo = postUrl('http://192.168.60.160:8080/jtvms/restzvms043/getReserveInfo.do',json_encode([
+            "RESERVATION_NO"=>'',
+            "WECHATID"=>'',
+            "CAR_LICENSE"=>$carNo
+        ]));
+        if($reserveInfo->code != '90001'){
+            $this->ajaxReturn([
+                'Result' => "0",
+                'Data' => [
+                    'Message' => $reserveInfo->message
+                ]
+            ]);
+        }
+        if($reserveInfo->code == '90001' && $reserveInfo->data->BUSINESS_STATUS != '30' && $reserveInfo->data->BUSINESS_STATUS != '40' && $reserveInfo->data->BUSINESS_STATUS != '50'){
+            $this->ajaxReturn([
+                'Result' => "0",
+                'Data' => [
+                    'Message' => '您的预约状态不正确'
+                ]
+            ]);
+        }
         $queue = M("Queue");
         $data = $queue->where('car_no='."'$carNo'".' AND states <> 2')->find();
         
@@ -370,6 +392,28 @@ class QueueController extends Controller {
         $zt = $post['zt'] == 'true' ? 1 : 0;
         $carNo = str_replace('O', '0', $carNo);
         $carNo = str_replace('I', '1', $carNo);
+
+        $reserveInfo = postUrl('http://192.168.60.160:8080/jtvms/restzvms043/getReserveInfo.do',json_encode([
+            "RESERVATION_NO"=>'',
+            "WECHATID"=>'',
+            "CAR_LICENSE"=>$carNo
+        ]));
+        if($reserveInfo->code != '90001'){
+            $this->ajaxReturn([
+                'Result' => "0",
+                'Data' => [
+                    'Message' => $reserveInfo->message
+                ]
+            ]);
+        }
+        if($reserveInfo->code == '90001' && $reserveInfo->data->BUSINESS_STATUS != '30' && $reserveInfo->data->BUSINESS_STATUS != '40' && $reserveInfo->data->BUSINESS_STATUS != '50'){
+            $this->ajaxReturn([
+                'Result' => "0",
+                'Data' => [
+                    'Message' => '您的预约状态不正确'
+                ]
+            ]);
+        }
         $queue = M("Queue");
         $data = $queue->where('car_no='."'$carNo'".' AND states <> 2')->find();
         
