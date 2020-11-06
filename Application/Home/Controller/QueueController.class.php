@@ -496,7 +496,14 @@ class QueueController extends Controller {
                 }
             } else {
                 $queue->transmited_at = date("Y-m-d H:i:s");
-                $this->updateReserveStatus($data['car_no'],50);
+                $reserveInfo = postUrl('http://192.168.60.160:8080/jtvms/restzvms043/getReserveInfo.do',json_encode([
+                    "RESERVATION_NO"=>'',
+                    "WECHATID"=>'',
+                    "CAR_LICENSE"=>$data['car_no']
+                ]));
+                if($reserveInfo->code == '90001' && $reserveInfo->data->BUSINESS_STATUS == '40'){
+                    $this->updateReserveStatus($data['car_no'],50);
+                }
             }
             $queue->save();
     
