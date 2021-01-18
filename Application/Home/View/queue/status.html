@@ -71,10 +71,12 @@
             </div>
             <div class="warehouse">
                 <div class="warehouse-title">
-                    <h2>等待区</h2>
-                    <span class="wait-total"></span>
+                    <h2>杭州湾电材仓库</h2>
+                    <span class="ck6-total"></span>
                 </div>
-                <div class="status wait-status">
+                <div class="status ck6-queue-status">
+                </div>
+                <div class="status ck6-load-status">
                 </div>
             </div>
         </div>
@@ -245,6 +247,29 @@
                         html_ck5_load += '</svg>';
                     }
                     $(".ck5-load-status").html(html_ck5_load);
+                    //杭州湾电材仓库
+                    let html_ck6_total ='';
+                    let html_ck6_queue = '<div>排队中</div>';
+                    let html_ck6_load = '<div>装车中</div>';
+                    let ck6_total = parseInt(info.ck6Queue) + parseInt(info.ck6Load);
+                    if(ck6_total>=12){
+                        html_ck6_total += '仓库车辆共计 <b style="font-size:x-large;color:red;">'+ck6_total+'</b> 辆';
+                    }else{
+                        html_ck6_total += '仓库车辆共计 <b style="font-size:x-large">'+ck6_total+'</b> 辆';
+                    }
+                    $(".ck6-total").html(html_ck6_total);
+                    for (var i = 0; i < info.ck6Queue; i++) {
+                        html_ck6_queue += '<svg class="icon" aria-hidden="true">';
+                        html_ck6_queue += '<use xlink:href="#icon-car-green"></use>';
+                        html_ck6_queue += '</svg>';
+                    }
+                    $(".ck6-queue-status").html(html_ck6_queue);
+                    for (var i = 0; i < info.ck6Load; i++) {
+                        html_ck6_load += '<svg class="icon" aria-hidden="true">';
+                        html_ck6_load += '<use xlink:href="#icon-car-yellow"></use>';
+                        html_ck6_load += '</svg>';
+                    }
+                    $(".ck6-load-status").html(html_ck6_load);
                     //等待区
                     let html_wait_total ='';
                     let html_wait = '<div style="margin-bottom:10px">铜管|铜带|铜板：'+info.waitCk1+' 辆</div>'

@@ -163,7 +163,7 @@ class QueueController extends Controller {
         $res = $CarNoUid->where('car_no="'.$queue['car_no'].'"')->find();
         if($res){
             $content = urlencode("您好！ 【".$queue['car_no']."】 车主，您现在可以进厂，请尽快前往目标仓库装车。");
-            $url="http://wxpusher.zjiecode.com/api/send/message/?appToken=AT_X3zrNKfXRW8ctWQXvRe36F4FlsEAZWWn&uid=".$res['uid']."&content=".$content;
+            $url="http://wxpusher.zjiecode.com/api/send/message/?appToken=AT_riDOZCE8NwYJqnytEgsdi2b0QXG6UIIg&uid=".$res['uid']."&content=".$content;
             getUrl($url);
         } else {
             $this->ajaxReturn([
@@ -234,26 +234,28 @@ class QueueController extends Controller {
         $carNo = str_replace('I', '1', $carNo);
         $goodsType = implode(',', $type);
 
-        $reserveInfo = postUrl('http://192.168.60.160:8080/jtvms/restzvms043/getReserveInfo.do',json_encode([
-            "RESERVATION_NO"=>'',
-            "WECHATID"=>'',
-            "CAR_LICENSE"=>$carNo
-        ]));
-        if($reserveInfo->code != '90001'){
-            $this->ajaxReturn([
-                'Result' => "0",
-                'Data' => [
-                    'Message' => $reserveInfo->message
-                ]
-            ]);
-        }
-        if($reserveInfo->code == '90001' && $reserveInfo->data->BUSINESS_STATUS != '30' && $reserveInfo->data->BUSINESS_STATUS != '40' && $reserveInfo->data->BUSINESS_STATUS != '50'){
-            $this->ajaxReturn([
-                'Result' => "0",
-                'Data' => [
-                    'Message' => '您的预约状态不正确'
-                ]
-            ]);
+        if($ck != '06') {
+            $reserveInfo = postUrl('http://192.168.60.160:8080/jtvms/restzvms043/getReserveInfo.do',json_encode([
+                "RESERVATION_NO"=>'',
+                "WECHATID"=>'',
+                "CAR_LICENSE"=>$carNo
+            ]));
+            if($reserveInfo->code != '90001'){
+                $this->ajaxReturn([
+                    'Result' => "0",
+                    'Data' => [
+                        'Message' => $reserveInfo->message
+                    ]
+                ]);
+            }
+            if($reserveInfo->code == '90001' && $reserveInfo->data->BUSINESS_STATUS != '30' && $reserveInfo->data->BUSINESS_STATUS != '40' && $reserveInfo->data->BUSINESS_STATUS != '50'){
+                $this->ajaxReturn([
+                    'Result' => "0",
+                    'Data' => [
+                        'Message' => '您的预约状态不正确'
+                    ]
+                ]);
+            }
         }
         $queue = M("Queue");
         $data = $queue->where('car_no='."'$carNo'".' AND states <> 2')->find();
@@ -282,7 +284,9 @@ class QueueController extends Controller {
             $wait = M("Wait");
             $wait->where('car_no='."'$carNo'")->delete();
 
-            $this->updateReserveStatus($carNo,40);
+            if($ck != '06') {
+                $this->updateReserveStatus($carNo,40);
+            }
 
             $this->ajaxReturn([
                 'Result' => "1",
@@ -491,7 +495,7 @@ class QueueController extends Controller {
                 $queue->loaded_at = date("Y-m-d H:i:s");
                 if($res){
                     $content = urlencode("您好！ 【".$data['car_no']."】 车主，您的货物即将准备装车，请尽快将车辆开往发货台。 — ".C('cks')[$data['ck']]."仓库管理中心");
-                    $url="http://wxpusher.zjiecode.com/api/send/message/?appToken=AT_X3zrNKfXRW8ctWQXvRe36F4FlsEAZWWn&uid=".$res['uid']."&content=".$content;
+                    $url="http://wxpusher.zjiecode.com/api/send/message/?appToken=AT_riDOZCE8NwYJqnytEgsdi2b0QXG6UIIg&uid=".$res['uid']."&content=".$content;
                     getUrl($url);
                 }
             } else {
@@ -610,7 +614,11 @@ class QueueController extends Controller {
         $ck = I('ck');
         //生成二维码图片
         $object = new \QRcode();
-        $url=C('domain').'/home/queue/form?timestamp='.time().'&ck='.$ck.'&zt=false';//网址或者是文本内容
+        if($ck == '06'){
+            $url=C('domain').'/home/queue/form?timestamp='.time().'&ck='.$ck.'&zt=true';
+        }else{
+            $url=C('domain').'/home/queue/form?timestamp='.time().'&ck='.$ck.'&zt=false';//网址或者是文本内容
+        }
         $level=3;
         $size=8;
         $errorCorrectionLevel =intval($level) ;//容错级别
@@ -630,12 +638,15 @@ class QueueController extends Controller {
         $ck4Load = $queue->where('ck = "04" and states = 1')->count();
         $ck5Queue = $queue->where('ck = "05" and states = 0')->count();
         $ck5Load = $queue->where('ck = "05" and states = 1')->count();
+        $ck6Queue = $queue->where('ck = "06" and states = 0')->count();
+        $ck6Load = $queue->where('ck = "06" and states = 1')->count();
         $wait = M('Wait');
         $waitCk1 = $wait->where('ck = "01"')->count();
         $waitCk2 = $wait->where('ck = "02"')->count();
         $waitCk3 = $wait->where('ck = "03"')->count();
         $waitCk4 = $wait->where('ck = "04"')->count();
         $waitCk5 = $wait->where('ck = "05"')->count();
+        $waitCk6 = $wait->where('ck = "06"')->count();
 
         $this->ajaxReturn([
             'Result' => "1",
@@ -650,6 +661,8 @@ class QueueController extends Controller {
                 'ck4Load' => $ck4Load,
                 'ck5Queue' => $ck5Queue,
                 'ck5Load' => $ck5Load,
+                'ck6Queue' => $ck6Queue,
+                'ck6Load' => $ck6Load,
                 'waitCk1' => $waitCk1,
                 'waitCk2' => $waitCk2,
                 'waitCk3' => $waitCk3,

@@ -10,7 +10,7 @@
     <h1 class="title">仓库车辆排队系统-{$cks[$ck]}</h1>
     <input type="hidden" id="ck" value="{$ck}">
     <div class="marquee">
-        <marquee direction="up" behavior="scroll" scrollamount="3" scrolldelay="0" width="70%" height="600px" loop="-1" bgcolor="#F5F5F5">
+        <marquee direction="up" behavior="scroll" scrollamount="3" scrolldelay="0" width="70%" height="300px" loop="-1" bgcolor="#F5F5F5">
             <ol id="car_list"></ol>
         </marquee>
         <div class="qr-code">
@@ -30,6 +30,28 @@
                 <span>扫描二维码，绑定车辆信息↓</span>
                 <img style="width:100%; height:auto;" src="/Public/img/showqrcode.jpg">
             </div>
+        </div>
+    </div>
+    <div class="instruction">
+        <div class="instruction1">
+            <h5>使用方法一：</h5>
+            <p>如果您预约的是此仓库，打开【预约系统】。</p>
+            <p>使用预约系统右上角扫一扫功能扫描仓库</p>
+            <p>排队二维码，快速排队。</p>
+        </div>
+        <div>
+            <img src="/Public/img/instruction1.png" width="125" height="250">
+        </div>
+    </div>
+    <div class="instruction">
+        <div class="instruction2">
+            <h5>使用方法二：</h5>
+            <p>如果您预约的不是此仓库，请打开【微信】</p>
+            <p>扫一扫功能。</p>
+            <p>扫描仓库排队二维码，填写信息进行排队。</p>
+        </div>
+        <div>
+            <img src="/Public/img/instruction2.jpg" width="125" height="250">
         </div>
     </div>
 </body>
@@ -66,6 +88,16 @@
     }
     #queuing {
         color: tomato;
+    }
+    .instruction {
+        float: left;
+        width: 30%;
+    }
+    .instruction1 {
+        float: left;
+    }
+    .instruction2 {
+        float: left;
     }
 </style>
 
